@@ -72,11 +72,11 @@ export default function Home() {
   return (
     <div className="overflow-x-hidden bg-background text-text-primary">
       <nav className="sticky top-0 z-50 flex h-topbar-height items-center border-b border-divider bg-card-bg/95 shadow-sm backdrop-blur">
-        <div className="mx-auto flex w-full max-w-container-max items-center justify-between px-md sm:px-xl">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-md sm:px-xl">
           <div className="flex items-center gap-xl">
             <Brand />
             <div className="hidden items-center gap-lg md:flex">
-              {["Features", "How It Works", "Use Cases", "Pricing", "FAQ"].map(
+              {["Features", "How It Works", "Use Cases"].map(
                 (item) => (
                   <a
                     key={item}
@@ -91,7 +91,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-md">
             <Link
-              href="/connect-wallet"
+              href="/onboarding"
               className="hidden rounded-lg px-md py-sm font-semibold text-text-primary transition hover:bg-surface-container-low sm:inline-flex"
             >
               Sign In
@@ -102,12 +102,12 @@ export default function Home() {
       </nav>
 
       <header className="relative overflow-hidden py-3xl">
-        <div className="mx-auto grid max-w-container-max items-center gap-xl px-md sm:px-xl md:grid-cols-2">
+        <div className="mx-auto grid max-w-7xl items-center gap-2xl px-md sm:px-xl lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.9fr)]">
           <div className="fade-up">
             <span className="mb-md inline-block rounded-full bg-primary-tint px-md py-xs text-sm font-semibold text-primary">
               Built on Stellar Network
             </span>
-            <h1 className="font-display mb-lg text-4xl font-bold leading-tight text-text-primary sm:text-5xl">
+            <h1 className="font-display mb-lg max-w-3xl text-4xl font-bold leading-tight text-text-primary sm:text-5xl">
               Borderless Payroll & Escrow Infrastructure for Modern Teams.
             </h1>
             <p className="mb-xl max-w-lg text-lg leading-8 text-text-secondary">
@@ -117,13 +117,13 @@ export default function Home() {
             <div className="flex flex-wrap gap-md">
               <Link
                 href="/connect-wallet"
-                className="rounded-lg bg-primary px-xl py-md font-bold text-on-primary shadow-md transition hover:bg-primary-dark"
+                className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-xl font-bold text-on-primary shadow-md transition hover:bg-primary-hover"
               >
                 Get Started
               </Link>
               <Link
                 href="/dashboard"
-                className="rounded-lg border border-border bg-card-bg px-xl py-md font-bold text-text-primary transition hover:bg-surface-container-low"
+                className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-card-bg px-xl font-bold text-text-primary transition hover:bg-surface-container-low"
               >
                 View Demo
               </Link>
@@ -134,11 +134,11 @@ export default function Home() {
       </header>
 
       <section className="bg-bg-secondary py-2xl">
-        <div className="mx-auto grid max-w-container-max grid-cols-2 gap-lg px-md sm:px-xl lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-lg px-md sm:grid-cols-2 sm:px-xl lg:grid-cols-4">
           {metrics.map(([value, label]) => (
             <div
               key={label}
-              className="rounded-xl border border-border bg-card-bg p-lg text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              className="flex min-h-32 flex-col items-center justify-center rounded-xl border border-border bg-card-bg p-lg text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md"
             >
               <p className="font-display mb-xs text-3xl font-bold text-primary">
                 {value}
@@ -150,7 +150,7 @@ export default function Home() {
       </section>
 
       <section id="features" className="py-3xl">
-        <div className="mx-auto max-w-container-max px-md sm:px-xl">
+        <div className="mx-auto max-w-7xl px-md sm:px-xl">
           <div className="mx-auto mb-3xl max-w-2xl text-center">
             <h2 className="font-display mb-md text-3xl font-semibold">
               Managing Global Payments Is Still Broken
@@ -167,7 +167,7 @@ export default function Home() {
               return (
                 <div
                   key={problem.title}
-                  className="group rounded-xl border border-border bg-card-bg p-xl shadow-sm transition hover:border-status-error"
+                  className="group flex h-full flex-col rounded-xl border border-border bg-card-bg p-xl shadow-sm transition hover:border-status-error"
                 >
                   <div className="mb-lg flex h-12 w-12 items-center justify-center rounded-lg bg-red-50 text-status-error transition group-hover:scale-110">
                     <Icon size={26} />
@@ -184,7 +184,7 @@ export default function Home() {
       </section>
 
       <section className="bg-surface-container-low py-3xl">
-        <div className="mx-auto max-w-container-max px-md sm:px-xl">
+        <div className="mx-auto max-w-7xl px-md sm:px-xl">
           <div className="mb-3xl flex flex-col justify-between gap-lg md:flex-row md:items-end">
             <div className="max-w-xl">
               <h2 className="font-display mb-md text-3xl font-semibold">
@@ -209,7 +209,7 @@ export default function Home() {
               return (
                 <div
                   key={title as string}
-                  className="rounded-xl border border-border bg-card-bg p-lg shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                  className="flex h-full flex-col rounded-xl border border-border bg-card-bg p-lg shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
                   <FeatureIcon className="mb-md text-primary" size={28} />
                   <h4 className="mb-sm font-bold">{title as string}</h4>
@@ -222,7 +222,7 @@ export default function Home() {
       </section>
 
       <section id="how-it-works" className="py-3xl">
-        <div className="mx-auto max-w-container-max px-md sm:px-xl">
+        <div className="mx-auto max-w-7xl px-md sm:px-xl">
           <h2 className="font-display mb-3xl text-center text-3xl font-semibold">
             How StellFlow Works
           </h2>
@@ -252,7 +252,7 @@ export default function Home() {
       </section>
 
       <section id="use-cases" className="bg-bg-secondary py-3xl">
-        <div className="mx-auto max-w-container-max px-md sm:px-xl">
+        <div className="mx-auto max-w-7xl px-md sm:px-xl">
           <h2 className="font-display mb-2xl text-center text-3xl font-semibold">
             Solutions for Every Professional
           </h2>
@@ -260,7 +260,7 @@ export default function Home() {
             {useCases.map((item) => (
               <article
                 key={item.title}
-                className="overflow-hidden rounded-xl border border-border bg-card-bg shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card-bg shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
                 <div className={`h-48 ${item.accent} p-lg`}>
                   <div className="h-full rounded-lg border border-white/70 bg-white/70 p-md shadow-inner">
@@ -276,11 +276,11 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="p-xl">
+                <div className="flex flex-1 flex-col p-xl">
                   <h4 className="font-display mb-md text-xl font-medium">
                     {item.title}
                   </h4>
-                  <p className="mb-lg text-text-secondary">{item.copy}</p>
+                  <p className="mb-lg flex-1 text-text-secondary">{item.copy}</p>
                   <Link
                     href="/connect-wallet"
                     className="inline-flex items-center gap-xs text-sm font-bold text-primary"
@@ -295,7 +295,7 @@ export default function Home() {
       </section>
 
       <section className="px-md py-3xl sm:px-xl">
-        <div className="mx-auto max-w-container-max rounded-xl bg-primary p-2xl text-center text-on-primary sm:p-3xl">
+        <div className="mx-auto max-w-7xl rounded-xl bg-primary p-2xl text-center text-on-primary sm:p-3xl">
           <h2 className="font-display mx-auto mb-lg max-w-3xl text-3xl font-bold sm:text-5xl">
             Start Sending and Receiving Payments Globally.
           </h2>
@@ -306,13 +306,13 @@ export default function Home() {
           <div className="flex flex-wrap justify-center gap-md">
             <Link
               href="/connect-wallet"
-              className="rounded-xl bg-on-primary px-xl py-md font-extrabold text-primary shadow-lg transition hover:bg-primary-tint"
+              className="inline-flex h-12 items-center justify-center rounded-lg bg-on-primary px-xl font-extrabold text-primary shadow-lg transition hover:bg-primary-tint"
             >
               Open Free Account
             </Link>
             <a
               href="mailto:sales@stellflow.io"
-              className="rounded-xl border-2 border-primary-light px-xl py-md font-extrabold text-on-primary transition hover:bg-white/10"
+              className="inline-flex h-12 items-center justify-center rounded-lg border-2 border-primary-light px-xl font-extrabold text-on-primary transition hover:bg-white/10"
             >
               Contact Sales
             </a>
@@ -321,7 +321,7 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-divider bg-white px-md py-xl sm:px-xl">
-        <div className="mx-auto flex max-w-container-max flex-col justify-between gap-md text-sm text-text-muted md:flex-row md:items-center">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-md text-sm text-text-muted md:flex-row md:items-center">
           <Brand compact />
           <span>© 2026 StellFlow Infrastructure. All rights reserved.</span>
           <span className="flex items-center gap-xs">

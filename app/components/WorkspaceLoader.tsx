@@ -1,6 +1,13 @@
 "use client";
 
-import { Check, Gauge, LayoutDashboard, Rocket, ShieldCheck, Sync } from "lucide-react";
+import {
+  Check,
+  Gauge,
+  LayoutDashboard,
+  RefreshCw,
+  Rocket,
+  ShieldCheck,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 const loaderSteps = [
@@ -20,7 +27,7 @@ const loaderSteps = [
     title: "Syncing Profile",
     activeText: "Fetching encrypted metadata...",
     completeText: "Profile synced",
-    icon: Sync,
+    icon: RefreshCw,
   },
   {
     title: "Loading Dashboard",
@@ -31,7 +38,7 @@ const loaderSteps = [
 ];
 
 export function WorkspaceLoader() {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     if (activeStep >= loaderSteps.length) {

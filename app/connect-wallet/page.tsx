@@ -1,87 +1,67 @@
-import { Bell, BarChart3 } from "lucide-react";
+import { CheckCircle2, LockKeyhole, ShieldCheck, Wallet } from "lucide-react";
+import Link from "next/link";
 import { Brand } from "../components/Brand";
 import { WalletModal } from "../components/WalletModal";
 
 export default function ConnectWalletPage() {
   return (
-    <div className="min-h-screen bg-surface-bright text-text-primary">
-      <aside className="fixed left-0 top-0 hidden h-full w-sidebar-width flex-col border-r border-divider bg-card-bg p-md lg:flex">
-        <div className="mb-xl px-xs">
-          <Brand caption="Enterprise Finance" compact />
+    <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_0%_0%,rgba(140,179,105,0.12),transparent_30%),radial-gradient(circle_at_100%_100%,rgba(217,223,245,0.62),transparent_34%),#f8f9fa] px-md py-3xl text-text-primary">
+      <section className="grid w-full max-w-6xl items-center gap-2xl lg:grid-cols-[1fr_440px]">
+        <div className="fade-up">
+          <Link href="/" className="mb-2xl inline-flex">
+            <Brand caption="Enterprise Finance" />
+          </Link>
+          <p className="mb-md inline-flex items-center gap-sm rounded-full bg-primary-tint px-md py-xs text-sm font-semibold text-primary">
+            <ShieldCheck size={16} />
+            Secure Stellar wallet handoff
+          </p>
+          <h1 className="font-display mb-lg max-w-3xl text-4xl font-bold leading-tight text-text-primary sm:text-5xl">
+            Connect your wallet before creating your StellFlow workspace.
+          </h1>
+          <p className="max-w-2xl text-lg leading-8 text-text-secondary">
+            Choose a Stellar wallet, confirm access, then continue through the
+            onboarding steps before the dashboard is prepared.
+          </p>
         </div>
-        <nav className="space-y-xs">
-          {["Dashboard", "Invoices", "Escrows", "Analytics"].map((item, index) => (
-            <div
-              key={item}
-              className={`rounded-lg p-md font-medium ${
-                index === 0
-                  ? "bg-primary-tint text-primary"
-                  : "text-text-secondary"
-              }`}
-            >
-              {item}
-            </div>
-          ))}
-        </nav>
-      </aside>
 
-      <main className="min-h-screen p-lg lg:ml-sidebar-width">
-        <header className="mb-xl flex min-h-topbar-height items-center justify-between">
-          <div>
-            <h1 className="font-display text-3xl font-semibold">
-              Financial Overview
-            </h1>
-            <p className="text-text-secondary">
-              Monitor your enterprise assets on Stellar
-            </p>
+        <div className="fade-up rounded-xl border border-border bg-card-bg p-xl shadow-sm [animation-delay:140ms]">
+          <div className="mb-xl flex h-14 w-14 items-center justify-center rounded-lg bg-primary-tint text-primary">
+            <Wallet size={30} />
           </div>
-          <div className="flex items-center gap-md">
-            <button className="rounded-full p-md transition hover:bg-surface-container-low">
-              <Bell size={20} />
-            </button>
+          <h2 className="font-display mb-sm text-2xl font-semibold">
+            Start onboarding
+          </h2>
+          <p className="mb-xl text-text-secondary">
+            Your dashboard stays locked until wallet selection and setup are
+            complete.
+          </p>
+          <div className="mb-xl space-y-md">
+            {[
+              "Select a Stellar wallet",
+              "Complete profile and workspace setup",
+              "Verify security preferences",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-md">
+                <CheckCircle2 className="shrink-0 text-primary" size={20} />
+                <span className="font-medium text-text-primary">{item}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col gap-md sm:flex-row">
             <WalletModal defaultOpen />
+            <Link
+              href="/"
+              className="inline-flex h-11 items-center justify-center rounded-lg border border-border bg-white px-lg font-semibold text-text-primary transition hover:bg-surface-container-low"
+            >
+              Back Home
+            </Link>
           </div>
-        </header>
-
-        <section className="grid grid-cols-1 gap-lg md:grid-cols-3">
-          <div className="rounded-xl border border-divider bg-card-bg p-lg shadow-sm md:col-span-2">
-            <div className="mb-xl flex items-center justify-between">
-              <h2 className="font-display text-2xl font-semibold">
-                Volume Analytics
-              </h2>
-              <span className="rounded-full bg-primary-tint px-md py-xs text-xs font-semibold text-primary">
-                7 Days
-              </span>
-            </div>
-            <div className="flex h-64 items-end gap-sm">
-              {[40, 60, 35, 85, 55, 70, 95].map((height) => (
-                <span
-                  key={height}
-                  className="flex-1 rounded-t-lg bg-primary-container transition hover:bg-primary"
-                  style={{ height: `${height}%` }}
-                />
-              ))}
-            </div>
+          <div className="mt-lg flex items-center gap-sm rounded-lg bg-surface-container-low p-md text-sm text-text-secondary">
+            <LockKeyhole className="shrink-0 text-primary" size={18} />
+            Wallet access is used only to continue setup in this prototype.
           </div>
-          <div className="flex flex-col justify-between overflow-hidden rounded-xl bg-primary p-lg text-on-primary shadow-sm">
-            <div>
-              <span className="text-xs font-semibold uppercase opacity-80">
-                Global Network
-              </span>
-              <h2 className="font-display mt-xs text-3xl font-semibold">
-                Real-time settlement.
-              </h2>
-            </div>
-            <div>
-              <BarChart3 className="my-xl opacity-70" size={64} />
-              <p className="mb-lg">
-                Access institutional-grade assets with StellFlow&apos;s direct
-                bridge.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+        </div>
+      </section>
+    </main>
   );
 }

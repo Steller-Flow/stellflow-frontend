@@ -225,13 +225,6 @@ export function OnboardingForm() {
                 <ArrowRight size={18} />
               </button>
             )}
-
-            <a
-              href="/auth/loading"
-              className="inline-flex h-11 w-full items-center justify-center rounded-lg border border-border bg-white px-xl font-semibold text-text-primary transition hover:bg-surface-container-low active:scale-[0.98] sm:w-auto"
-            >
-              Skip For Now
-            </a>
           </div>
         </form>
 

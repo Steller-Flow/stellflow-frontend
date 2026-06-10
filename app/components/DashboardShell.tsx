@@ -13,6 +13,8 @@ import Link from "next/link";
 import { Brand } from "./Brand";
 import { WalletModal } from "./WalletModal";
 
+type IconComponent = React.ComponentType<{ size?: number; className?: string }>;
+
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/invoices", label: "Invoices", icon: FileText },
@@ -155,18 +157,22 @@ export function EmptyState({
 }
 
 export function OverviewCards() {
+  const cards: Array<{
+    label: string;
+    value: string;
+    icon: IconComponent;
+  }> = [
+    { label: "Total Balance", value: "0.00 USDC", icon: ShieldCheck },
+    { label: "Open Invoices", value: "0", icon: FileText },
+    { label: "Active Escrows", value: "0", icon: LockKeyhole },
+  ];
+
   return (
     <div className="mb-lg grid gap-lg md:grid-cols-3">
-      {[
-        ["Total Balance", "0.00 USDC", ShieldCheck],
-        ["Open Invoices", "0", FileText],
-        ["Active Escrows", "0", LockKeyhole],
-      ].map(([label, value, Icon]) => {
-        const CardIcon = Icon as typeof ShieldCheck;
-
+      {cards.map(({ label, value, icon: CardIcon }) => {
         return (
           <div
-            key={label as string}
+            key={label}
             className="rounded-xl border border-divider bg-card-bg p-lg shadow-sm"
           >
             <div className="mb-lg flex h-11 w-11 items-center justify-center rounded-lg bg-primary-tint text-primary">
@@ -174,7 +180,7 @@ export function OverviewCards() {
             </div>
             <p className="text-sm font-medium text-text-secondary">{label}</p>
             <p className="font-display mt-xs text-3xl font-semibold text-text-primary">
-              {value as string}
+              {value}
             </p>
           </div>
         );
