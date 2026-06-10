@@ -1,65 +1,335 @@
-import Image from "next/image";
+import {
+  ArrowRight,
+  Clock3,
+  FileText,
+  Landmark,
+  LockKeyhole,
+  ReceiptText,
+  ShieldAlert,
+  ShieldCheck,
+  Users,
+  Zap,
+} from "lucide-react";
+import Link from "next/link";
+import { Brand } from "./components/Brand";
+import { LandingDashboardPreview } from "./components/LandingDashboardPreview";
+import { WalletModal } from "./components/WalletModal";
+
+const metrics = [
+  ["$240M+", "Payments Processed"],
+  ["150k+", "Invoices Generated"],
+  ["45", "Countries Supported"],
+  ["0.5s", "Average Settlement Time"],
+];
+
+const problems = [
+  {
+    title: "Slow Transfers",
+    description:
+      "Legacy wires take days to clear and create cash-flow friction for distributed teams.",
+    icon: Clock3,
+  },
+  {
+    title: "High Fees",
+    description:
+      "Intermediary banks and conversion spreads eat into payment volume.",
+    icon: Landmark,
+  },
+  {
+    title: "No Protection",
+    description:
+      "Standard transfers lack milestone security and dispute-aware workflows.",
+    icon: ShieldAlert,
+  },
+];
+
+const features = [
+  ["Invoice Creation", "Professional billing with instant crypto and fiat reconciliation.", ReceiptText],
+  ["Milestone Escrow", "Funds are held securely and released as deliverables are approved.", LockKeyhole],
+  ["Payroll Distribution", "Pay contractors worldwide from one operational dashboard.", Users],
+  ["Instant Settlement", "USDC arrives in seconds, ready for local off-ramp workflows.", Zap],
+];
+
+const useCases = [
+  {
+    title: "For Freelancers",
+    copy: "Use smart escrows to protect each milestone and reduce late payment risk.",
+    accent: "bg-primary-tint",
+  },
+  {
+    title: "For Remote Teams",
+    copy: "Pay global talent in USDC without bank delays or excessive FX spreads.",
+    accent: "bg-secondary-container",
+  },
+  {
+    title: "For Agencies",
+    copy: "Centralize client billing and subcontractor payouts in one workspace.",
+    accent: "bg-tertiary-container",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="overflow-x-hidden bg-background text-text-primary">
+      <nav className="sticky top-0 z-50 flex h-topbar-height items-center border-b border-divider bg-card-bg/95 shadow-sm backdrop-blur">
+        <div className="mx-auto flex w-full max-w-container-max items-center justify-between px-md sm:px-xl">
+          <div className="flex items-center gap-xl">
+            <Brand />
+            <div className="hidden items-center gap-lg md:flex">
+              {["Features", "How It Works", "Use Cases", "Pricing", "FAQ"].map(
+                (item) => (
+                  <a
+                    key={item}
+                    className="font-medium text-text-secondary transition hover:text-primary"
+                    href={`#${item.toLowerCase().replaceAll(" ", "-")}`}
+                  >
+                    {item}
+                  </a>
+                ),
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-md">
+            <Link
+              href="/connect-wallet"
+              className="hidden rounded-lg px-md py-sm font-semibold text-text-primary transition hover:bg-surface-container-low sm:inline-flex"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Sign In
+            </Link>
+            <WalletModal />
+          </div>
+        </div>
+      </nav>
+
+      <header className="relative overflow-hidden py-3xl">
+        <div className="mx-auto grid max-w-container-max items-center gap-xl px-md sm:px-xl md:grid-cols-2">
+          <div className="fade-up">
+            <span className="mb-md inline-block rounded-full bg-primary-tint px-md py-xs text-sm font-semibold text-primary">
+              Built on Stellar Network
+            </span>
+            <h1 className="font-display mb-lg text-4xl font-bold leading-tight text-text-primary sm:text-5xl">
+              Borderless Payroll & Escrow Infrastructure for Modern Teams.
+            </h1>
+            <p className="mb-xl max-w-lg text-lg leading-8 text-text-secondary">
+              Manage global payroll, streamline USDC settlements, and protect
+              contractors with smart milestone-based escrows.
+            </p>
+            <div className="flex flex-wrap gap-md">
+              <Link
+                href="/connect-wallet"
+                className="rounded-lg bg-primary px-xl py-md font-bold text-on-primary shadow-md transition hover:bg-primary-dark"
+              >
+                Get Started
+              </Link>
+              <Link
+                href="/dashboard"
+                className="rounded-lg border border-border bg-card-bg px-xl py-md font-bold text-text-primary transition hover:bg-surface-container-low"
+              >
+                View Demo
+              </Link>
+            </div>
+          </div>
+          <LandingDashboardPreview />
+        </div>
+      </header>
+
+      <section className="bg-bg-secondary py-2xl">
+        <div className="mx-auto grid max-w-container-max grid-cols-2 gap-lg px-md sm:px-xl lg:grid-cols-4">
+          {metrics.map(([value, label]) => (
+            <div
+              key={label}
+              className="rounded-xl border border-border bg-card-bg p-lg text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md"
             >
-              Learning
-            </a>{" "}
-            center.
+              <p className="font-display mb-xs text-3xl font-bold text-primary">
+                {value}
+              </p>
+              <p className="text-sm font-medium text-text-secondary">{label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="features" className="py-3xl">
+        <div className="mx-auto max-w-container-max px-md sm:px-xl">
+          <div className="mx-auto mb-3xl max-w-2xl text-center">
+            <h2 className="font-display mb-md text-3xl font-semibold">
+              Managing Global Payments Is Still Broken
+            </h2>
+            <p className="text-text-secondary">
+              Legacy systems were not built for the modern decentralized
+              workforce.
+            </p>
+          </div>
+          <div className="grid gap-xl md:grid-cols-3">
+            {problems.map((problem) => {
+              const Icon = problem.icon;
+
+              return (
+                <div
+                  key={problem.title}
+                  className="group rounded-xl border border-border bg-card-bg p-xl shadow-sm transition hover:border-status-error"
+                >
+                  <div className="mb-lg flex h-12 w-12 items-center justify-center rounded-lg bg-red-50 text-status-error transition group-hover:scale-110">
+                    <Icon size={26} />
+                  </div>
+                  <h3 className="font-display mb-md text-xl font-medium">
+                    {problem.title}
+                  </h3>
+                  <p className="text-text-secondary">{problem.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-surface-container-low py-3xl">
+        <div className="mx-auto max-w-container-max px-md sm:px-xl">
+          <div className="mb-3xl flex flex-col justify-between gap-lg md:flex-row md:items-end">
+            <div className="max-w-xl">
+              <h2 className="font-display mb-md text-3xl font-semibold">
+                One Platform. Global Payments.
+              </h2>
+              <p className="text-text-secondary">
+                Stellar ledger infrastructure and USDC settlement rails for the
+                modern economy.
+              </p>
+            </div>
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-sm font-bold text-primary hover:underline"
+            >
+              Explore Infrastructure <ArrowRight size={18} />
+            </Link>
+          </div>
+          <div className="grid gap-md md:grid-cols-4">
+            {features.map(([title, copy, Icon]) => {
+              const FeatureIcon = Icon as typeof FileText;
+
+              return (
+                <div
+                  key={title as string}
+                  className="rounded-xl border border-border bg-card-bg p-lg shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                >
+                  <FeatureIcon className="mb-md text-primary" size={28} />
+                  <h4 className="mb-sm font-bold">{title as string}</h4>
+                  <p className="text-sm text-text-secondary">{copy as string}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" className="py-3xl">
+        <div className="mx-auto max-w-container-max px-md sm:px-xl">
+          <h2 className="font-display mb-3xl text-center text-3xl font-semibold">
+            How StellFlow Works
+          </h2>
+          <div className="relative grid gap-xl md:grid-cols-4">
+            <div className="absolute left-0 top-6 hidden h-[2px] w-full bg-divider md:block" />
+            {["Create Invoice", "Fund Escrow", "Complete Work", "Release Payment"].map(
+              (item, index) => (
+                <div key={item} className="relative text-center">
+                  <div className="mx-auto mb-md flex h-12 w-12 items-center justify-center rounded-full border-4 border-card-bg bg-primary font-bold text-on-primary shadow-sm">
+                    {index + 1}
+                  </div>
+                  <h4 className="mb-xs font-bold">{item}</h4>
+                  <p className="text-sm text-text-secondary">
+                    {index === 0
+                      ? "Define milestones and deliverables."
+                      : index === 1
+                        ? "Secure USDC on Stellar rails."
+                        : index === 2
+                          ? "Submit and review project output."
+                          : "Release approved funds instantly."}
+                  </p>
+                </div>
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section id="use-cases" className="bg-bg-secondary py-3xl">
+        <div className="mx-auto max-w-container-max px-md sm:px-xl">
+          <h2 className="font-display mb-2xl text-center text-3xl font-semibold">
+            Solutions for Every Professional
+          </h2>
+          <div className="grid gap-xl md:grid-cols-3">
+            {useCases.map((item) => (
+              <article
+                key={item.title}
+                className="overflow-hidden rounded-xl border border-border bg-card-bg shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              >
+                <div className={`h-48 ${item.accent} p-lg`}>
+                  <div className="h-full rounded-lg border border-white/70 bg-white/70 p-md shadow-inner">
+                    <div className="mb-lg h-4 w-2/3 rounded-full bg-primary/20" />
+                    <div className="grid h-[calc(100%-32px)] grid-cols-3 items-end gap-sm">
+                      {[45, 75, 55].map((height) => (
+                        <span
+                          key={height}
+                          className="rounded-t-lg bg-primary/70"
+                          style={{ height: `${height}%` }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="p-xl">
+                  <h4 className="font-display mb-md text-xl font-medium">
+                    {item.title}
+                  </h4>
+                  <p className="mb-lg text-text-secondary">{item.copy}</p>
+                  <Link
+                    href="/connect-wallet"
+                    className="inline-flex items-center gap-xs text-sm font-bold text-primary"
+                  >
+                    Learn more <ArrowRight size={16} />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-md py-3xl sm:px-xl">
+        <div className="mx-auto max-w-container-max rounded-xl bg-primary p-2xl text-center text-on-primary sm:p-3xl">
+          <h2 className="font-display mx-auto mb-lg max-w-3xl text-3xl font-bold sm:text-5xl">
+            Start Sending and Receiving Payments Globally.
+          </h2>
+          <p className="mx-auto mb-2xl max-w-2xl text-primary-light">
+            Join teams using StellFlow for secure, instant, and borderless
+            financial operations.
           </p>
+          <div className="flex flex-wrap justify-center gap-md">
+            <Link
+              href="/connect-wallet"
+              className="rounded-xl bg-on-primary px-xl py-md font-extrabold text-primary shadow-lg transition hover:bg-primary-tint"
+            >
+              Open Free Account
+            </Link>
+            <a
+              href="mailto:sales@stellflow.io"
+              className="rounded-xl border-2 border-primary-light px-xl py-md font-extrabold text-on-primary transition hover:bg-white/10"
+            >
+              Contact Sales
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <footer className="border-t border-divider bg-white px-md py-xl sm:px-xl">
+        <div className="mx-auto flex max-w-container-max flex-col justify-between gap-md text-sm text-text-muted md:flex-row md:items-center">
+          <Brand compact />
+          <span>© 2026 StellFlow Infrastructure. All rights reserved.</span>
+          <span className="flex items-center gap-xs">
+            <ShieldCheck size={16} className="text-status-success" />
+            All Systems Operational
+          </span>
         </div>
-      </main>
+      </footer>
     </div>
   );
 }
