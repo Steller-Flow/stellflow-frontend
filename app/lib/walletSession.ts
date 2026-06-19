@@ -5,8 +5,6 @@ const WALLET_ADDRESS_KEY = "stellflow_wallet_address";
 const ONBOARDED_KEY = "stellflow_onboarded";
 const SESSION_EVENT = "stellflow-session-change";
 
-const DEMO_ADDRESS = "GC4X7JQK2ZP9M8N6Y5V3A1B0L4R8T2S6H9D7F1K3P5Q";
-
 export type WalletSession = {
   connected: boolean;
   onboarded: boolean;
@@ -29,8 +27,9 @@ export function getWalletSession(): WalletSession {
   };
 }
 
-export function connectWallet(address = DEMO_ADDRESS) {
+export function connectWallet(address: string) {
   if (!canUseStorage()) return;
+  if (!address) return;
 
   window.localStorage.setItem(WALLET_CONNECTED_KEY, "true");
   window.localStorage.setItem(WALLET_ADDRESS_KEY, address);
@@ -49,6 +48,7 @@ export function logoutWallet() {
 
   window.localStorage.removeItem(WALLET_CONNECTED_KEY);
   window.localStorage.removeItem(WALLET_ADDRESS_KEY);
+  window.localStorage.removeItem(ONBOARDED_KEY);
   notifySessionChange();
 }
 
