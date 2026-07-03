@@ -21,7 +21,7 @@ export function LandingDashboardPreview() {
   return (
     <div className="relative fade-up [animation-delay:160ms]">
       <div className="rounded-xl border border-border bg-card-bg p-md shadow-xl transition-transform duration-500 hover:rotate-0 md:rotate-2">
-        <div className="mb-md flex items-center justify-between border-b border-divider pb-md">
+        {/* <div className="mb-md flex items-center justify-between border-b border-divider pb-md">
           <div className="flex gap-sm">
             <span className="h-3 w-3 rounded-full bg-red-400" />
             <span className="h-3 w-3 rounded-full bg-yellow-400" />
@@ -30,12 +30,12 @@ export function LandingDashboardPreview() {
           <span className="text-xs font-medium text-text-muted">
             app.stellflow.io/dashboard
           </span>
-        </div>
+        </div> */}
 
         <div className="space-y-md">
           <div className="flex items-end justify-between gap-md">
             <div>
-              <p className="text-xs font-semibold uppercase text-text-muted">
+              <p className="text-xs font-semibold uppercase text-text-muted mb-2">
                 Total Balance
               </p>
               <p className="font-display text-2xl font-bold text-text-primary sm:text-3xl">
