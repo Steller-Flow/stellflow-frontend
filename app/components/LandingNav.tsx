@@ -36,7 +36,7 @@ export function LandingNav() {
 
   return (
     <nav className="sticky top-0 z-50 flex h-topbar-height items-center border-b border-divider bg-card-bg/95 shadow-sm backdrop-blur">
-      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between px-md sm:px-xl">
+      <div className="mx-auto flex w-full items-center justify-between px-md sm:px-25">
         <div className="flex min-w-0 items-center gap-xl">
           <Brand />
           <div className="hidden items-center gap-lg md:flex">
