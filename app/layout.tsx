@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: "StellFlow | Borderless Payroll & Escrow Infrastructure",
   description:
     "Manage global payroll, USDC settlements, and milestone escrow workflows on StellFlow.",
+  icons: {
+    icon: "/stellflow-logo.svg",
+    shortcut: "/stellflow-logo.svg",
+    apple: "/stellflow-logo.svg",
+  },
 };
 
 export default function RootLayout({
