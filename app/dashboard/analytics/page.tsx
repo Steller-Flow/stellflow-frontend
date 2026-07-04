@@ -1,5 +1,7 @@
-import { TrendingUp } from "lucide-react";
-import { DashboardShell, EmptyState } from "../../components/DashboardShell";
+"use client";
+
+import { DashboardShell } from "../../components/DashboardShell";
+import { AnalyticsCharts } from "../../components/analytics/AnalyticsCharts";
 
 export default function AnalyticsPage() {
   return (
@@ -8,12 +10,7 @@ export default function AnalyticsPage() {
       title="Analytics"
       description="View payment volume, settlement speed, and escrow performance."
     >
-      <EmptyState
-        icon={TrendingUp}
-        title="Analytics will appear after your first transaction"
-        description="Once invoices or escrows start moving, StellFlow will surface volume trends, settlement times, and payout health."
-        action="Explore Sample Metrics"
-      />
+      <AnalyticsCharts />
     </DashboardShell>
   );
 }
