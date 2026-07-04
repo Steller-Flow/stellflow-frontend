@@ -2,6 +2,8 @@
 
 const WALLET_CONNECTED_KEY = "stellflow_wallet_connected";
 const WALLET_ADDRESS_KEY = "stellflow_wallet_address";
+const WALLET_NETWORK_KEY = "stellflow_wallet_network";
+const WALLET_BALANCE_KEY = "stellflow_wallet_balance";
 const ONBOARDED_KEY = "stellflow_onboarded";
 const SESSION_EVENT = "stellflow-session-change";
 
@@ -9,6 +11,8 @@ export type WalletSession = {
   connected: boolean;
   onboarded: boolean;
   address: string | null;
+  network: string | null;
+  balance: string | null;
 };
 
 function canUseStorage() {
@@ -17,22 +21,36 @@ function canUseStorage() {
 
 export function getWalletSession(): WalletSession {
   if (!canUseStorage()) {
-    return { connected: false, onboarded: false, address: null };
+    return { connected: false, onboarded: false, address: null, network: null, balance: null };
   }
 
   return {
     connected: window.localStorage.getItem(WALLET_CONNECTED_KEY) === "true",
     onboarded: window.localStorage.getItem(ONBOARDED_KEY) === "true",
     address: window.localStorage.getItem(WALLET_ADDRESS_KEY),
+    network: window.localStorage.getItem(WALLET_NETWORK_KEY),
+    balance: window.localStorage.getItem(WALLET_BALANCE_KEY),
   };
 }
 
-export function connectWallet(address: string) {
+export function connectWallet(address: string, network?: string, balance?: string) {
   if (!canUseStorage()) return;
   if (!address) return;
 
   window.localStorage.setItem(WALLET_CONNECTED_KEY, "true");
   window.localStorage.setItem(WALLET_ADDRESS_KEY, address);
+  if (network) {
+    window.localStorage.setItem(WALLET_NETWORK_KEY, network);
+  }
+  if (balance !== undefined) {
+    window.localStorage.setItem(WALLET_BALANCE_KEY, balance);
+  }
+  notifySessionChange();
+}
+
+export function updateWalletBalance(balance: string) {
+  if (!canUseStorage()) return;
+  window.localStorage.setItem(WALLET_BALANCE_KEY, balance);
   notifySessionChange();
 }
 
@@ -48,6 +66,8 @@ export function logoutWallet() {
 
   window.localStorage.removeItem(WALLET_CONNECTED_KEY);
   window.localStorage.removeItem(WALLET_ADDRESS_KEY);
+  window.localStorage.removeItem(WALLET_NETWORK_KEY);
+  window.localStorage.removeItem(WALLET_BALANCE_KEY);
   window.localStorage.removeItem(ONBOARDED_KEY);
   notifySessionChange();
 }
@@ -59,6 +79,8 @@ export function onWalletSessionChange(callback: () => void) {
     if (
       event.key === WALLET_CONNECTED_KEY ||
       event.key === WALLET_ADDRESS_KEY ||
+      event.key === WALLET_NETWORK_KEY ||
+      event.key === WALLET_BALANCE_KEY ||
       event.key === ONBOARDED_KEY
     ) {
       callback();
