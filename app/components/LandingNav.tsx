@@ -17,6 +17,8 @@ export function LandingNav() {
     connected: false,
     onboarded: false,
     address: null,
+    network: null,
+    balance: null,
   });
 
   useEffect(() => {
