@@ -132,6 +132,9 @@ export default function EscrowsPage() {
                       className={`inline-flex shrink-0 items-center rounded-full px-md py-xs text-sm font-semibold ${STATUS_COLORS[escrow.status]}`}
                     >
                       {STATUS_LABELS[escrow.status]}
+                      className={`inline-flex shrink-0 items-center rounded-full px-md py-xs text-sm font-semibold ${ESCROW_STATE_COLORS[escrow.state]}`}
+                    >
+                      {ESCROW_STATE_LABELS[escrow.state]}
                     </span>
                   </div>
 
