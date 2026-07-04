@@ -4,15 +4,9 @@ import {
   isConnected,
   requestAccess,
   getNetwork,
-  getPublicKey,
   signTransaction,
-  allowAccess,
-  getAddress,
 } from "@stellar/freighter-api";
-import {
-  Horizon,
-  StellarSdk,
-} from "stellar-sdk";
+import { Horizon } from "stellar-sdk";
 
 export type FreighterWalletInfo = {
   address: string;
@@ -74,7 +68,8 @@ function mapFreighterError(error: unknown): FreighterError {
 
 export async function checkFreighterInstalled(): Promise<boolean> {
   try {
-    return await isConnected();
+    const result = await isConnected();
+    return typeof result === "boolean" ? result : result.isConnected === true;
   } catch {
     return false;
   }
@@ -129,10 +124,10 @@ export async function getFreighterBalance(address: string): Promise<FreighterWal
       : "0.0000000";
 
     const usdcBalance = account.balances.find(
-      (b) => b.asset_code === "USDC" && b.asset_issuer === "GA5ZSEJYB37JDD5GUPFYU6T6VXGVZHB5OGW2IVY36ROC4HX7JYB6O2U4"
+      (b) => "asset_code" in b && b.asset_code === "USDC" && "asset_issuer" in b && b.asset_issuer === "GA5ZSEJYB37JDD5GUPFYU6T6VXGVZHB5OGW2IVY36ROC4HX7JYB6O2U4"
     );
 
-    const usdcAmount = usdcBalance ? parseFloat(usdcBalance.balance).toFixed(2) : "0.00";
+    const usdcAmount = usdcBalance && "balance" in usdcBalance ? parseFloat(usdcBalance.balance).toFixed(2) : "0.00";
 
     return {
       address,
@@ -162,10 +157,10 @@ export async function signFreighterTransaction(
   try {
     const network = await getNetwork();
     const passphrase = networkPassphrase || network.networkPassphrase;
-    const signedTx = await signTransaction(txXdr, {
+    const result = await signTransaction(txXdr, {
       networkPassphrase: passphrase,
     });
-    return signedTx;
+    return typeof result === "string" ? result : result.signedTxXdr;
   } catch (error) {
     if ((error as FreighterError).code) {
       throw error;
@@ -179,8 +174,11 @@ export async function getCurrentFreighterAddress(): Promise<string | null> {
     const installed = await checkFreighterInstalled();
     if (!installed) return null;
 
-    const address = await getPublicKey();
-    return address || null;
+    const response = await requestAccess();
+    if ("address" in response) {
+      return response.address;
+    }
+    return null;
   } catch {
     return null;
   }

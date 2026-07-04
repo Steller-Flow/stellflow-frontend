@@ -49,7 +49,7 @@ export function InvoiceFilters({ filter, onFilterChange }: InvoiceFiltersProps) 
 
   const handleAmountRangeChange = (field: "min" | "max", value: string) => {
     const numValue = value ? parseFloat(value) : undefined;
-    const current = filter.amountRange || {};
+    const current = filter.amountRange || { min: 0, max: Infinity };
     onFilterChange({
       ...filter,
       amountRange: { ...current, [field]: numValue },
