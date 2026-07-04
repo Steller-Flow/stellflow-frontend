@@ -1,176 +1,151 @@
 # StellFlow Frontend
 
-## Cross-Border Payroll, Invoice & Escrow Platform Built on Stellar
+Cross-border payroll, invoice, and escrow platform built on the Stellar network.
 
-StellFlow is a decentralized payroll, invoice, and escrow platform designed for African freelancers, remote workers, agencies, and global clients.
+## Tech Stack
 
-The platform leverages the Stellar blockchain and Soroban smart contracts to enable fast, transparent, low-cost, and secure cross-border payments using USDC.
+- [Next.js](https://nextjs.org/) 16 (App Router)
+- [React](https://react.dev/) 19
+- [TypeScript](https://www.typescriptlang.org/) 5
+- [Tailwind CSS](https://tailwindcss.com/) 4
+- [Stellar SDK](https://stellar.org/developers) + [Freighter API](https://docs.freighter.app/)
+- [Vitest](https://vitest.dev/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
----
+## Getting Started
 
-# Problem Statement
+### Prerequisites
 
-Millions of freelancers and remote workers across Africa face serious challenges receiving international payments.
+- Node.js 18+
+- npm, yarn, or pnpm
 
-Traditional payment systems often introduce:
-
-- Delayed settlement times
-- High transaction and conversion fees
-- PayPal restrictions in several African countries
-- Currency instability
-- Invoice disputes
-- Lack of escrow protection
-- Limited access to global financial systems
-
-These problems reduce access to international opportunities and create trust issues between freelancers and clients.
-
----
-
-# Solution
-
-StellFlow provides blockchain-powered payment infrastructure that enables:
-
-- Instant global USDC payments
-- Milestone-based escrow protection
-- Transparent invoice management
-- Secure payment settlements
-- Low-cost cross-border transfers
-
-The platform combines modern payroll tooling with Stellar's payment infrastructure to create a seamless financial experience for remote work economies.
-
----
-
-# Why Stellar?
-
-Stellar is optimized for:
-
-- Global payments
-- Stablecoin transfers
-- Financial inclusion
-- Remittances
-- Low transaction fees
-- Fast settlement speeds
-
-By building on Stellar, StellFlow benefits from:
-
-- Near-instant transactions
-- Extremely low fees
-- Native USDC support
-- Efficient payment rails
-- Global accessibility
-
----
-
-# Frontend Overview
-
-This repository contains the frontend application for StellFlow.
-
-The frontend is responsible for delivering the complete user experience for freelancers, clients, and remote teams interacting with the platform.
-
-Users can:
-
-- Connect wallets
-- Create invoices
-- Fund escrow contracts
-- Track payments
-- Monitor transaction history
-- Manage payroll settlements
-
----
-
-# Frontend Responsibilities
-
-The frontend handles:
-
-- Wallet authentication
-- Invoice creation flows
-- Escrow dashboards
-- Payment tracking
-- User onboarding
-- Analytics visualization
-- Smart contract interaction
-- API communication
-
----
-
-# Frontend Stack
-
-- Next.js
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- Stellar SDK
-- Freighter Wallet API
-
----
-
-# Wallet Integration
-
-The frontend integrates with:
-
-- Freighter Wallet
-
-This allows users to:
-- Connect Stellar accounts
-- Sign transactions
-- Authorize escrow payments
-- Interact with Soroban smart contracts
-
----
-
-# UI Goals
-
-The frontend focuses heavily on:
-
-- Simplicity
-- Accessibility
-- Mobile responsiveness
-- Clear transaction visibility
-- Familiar fintech UX patterns
-
-The goal is to make blockchain-powered payroll feel intuitive for non-crypto-native users.
-
----
-
-# Frontend Architecture
+### Installation
 
 ```bash
-src/
-├── app/
-├── components/
-├── hooks/
-├── services/
-├── store/
-├── types/
-└── utils/
+npm install
 ```
 
----
+### Development
 
-# Smart Contract Interaction
+```bash
+npm run dev
+```
 
-The frontend communicates with Soroban smart contracts to:
+Opens [http://localhost:3000](http://localhost:3000) in your browser.
 
-- Create escrows
-- Deposit payments
-- Release funds
-- Fetch escrow states
+### Build
 
-Blockchain interactions are powered using Stellar SDK integrations.
+```bash
+npm run build
+```
 
----
+### Production
 
-# Future Improvements
+```bash
+npm start
+```
 
-- Mobile application
-- Multi-language support
-- AI invoice generation
-- Payroll automation
-- Push notifications
-- Team payroll dashboards
+### Lint
 
----
+```bash
+npm run lint
+```
 
-# License
+### Tests
 
-MIT License
+```bash
+npm test            # Run once
+npm run test:watch  # Watch mode
+```
+
+## Project Structure
+
+```
+stellflow-frontend/
+├── app/
+│   ├── auth/
+│   │   └── loading/page.tsx         # Onboarding loading animation
+│   ├── components/
+│   │   ├── landing/                  # Landing page section components
+│   │   │   ├── CTASection.tsx
+│   │   │   ├── FeaturesSection.tsx
+│   │   │   ├── FooterSection.tsx
+│   │   │   ├── HeroSection.tsx
+│   │   │   ├── HowItWorksSection.tsx
+│   │   │   ├── MetricsSection.tsx
+│   │   │   ├── ProblemsSection.tsx
+│   │   │   └── UseCasesSection.tsx
+│   │   ├── AuthGuard.tsx             # Route protection by auth state
+│   │   ├── Brand.tsx                 # Logo + brand text
+│   │   ├── DashboardAccount.tsx      # Wallet address + logout
+│   │   ├── DashboardShell.tsx        # Sidebar layout + empty state
+│   │   ├── LandingDashboardPreview.tsx
+│   │   ├── LandingNav.tsx            # Landing page navigation
+│   │   ├── OnboardingForm.tsx        # Multi-step onboarding wizard
+│   │   ├── OnboardingGate.tsx        # Guards onboarding route
+│   │   ├── WalletModal.tsx           # Wallet selection modal
+│   │   └── WorkspaceLoader.tsx       # Animated workspace setup
+│   ├── connect-wallet/
+│   │   └── page.tsx                  # Wallet connection page
+│   ├── dashboard/
+│   │   ├── analytics/page.tsx
+│   │   ├── escrows/page.tsx
+│   │   ├── invoices/page.tsx
+│   │   ├── notifications/page.tsx
+│   │   ├── settings/page.tsx
+│   │   └── page.tsx                  # Dashboard home
+│   ├── lib/
+│   │   └── walletSession.ts          # LocalStorage session helpers
+│   ├── onboarding/
+│   │   ├── failure/page.tsx
+│   │   ├── success/page.tsx
+│   │   └── page.tsx                  # Onboarding form page
+│   ├── globals.css                   # Tailwind + design tokens
+│   ├── layout.tsx                    # Root layout
+│   └── page.tsx                      # Landing page
+├── public/                           # Static assets
+├── tests/
+│   ├── setup.ts                      # Vitest setup
+│   ├── AuthGuard.test.tsx
+│   ├── LandingNav.test.tsx
+│   ├── OnboardingForm.test.tsx
+│   ├── WalletModal.test.tsx
+│   └── walletSession.test.ts
+├── vitest.config.ts                  # Test configuration
+├── next.config.ts
+├── tailwind.config.ts
+├── tsconfig.json
+└── package.json
+```
+
+## Environment Variables
+
+This project currently uses `localStorage` for session management and does not require environment variables for local development.
+
+If backend API integration is added in the future, create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+## Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run test suite |
+| `npm run test:watch` | Run tests in watch mode |
+
+## Key Features
+
+- **Wallet Connection** — Freighter, Albedo, WalletConnect support
+- **Onboarding Flow** — Multi-step profile, workspace, and security setup
+- **Dashboard** — Invoices, escrows, analytics, notifications, settings
+- **Auth Guards** — Route protection based on wallet + onboarding state
+- **Responsive** — Mobile-first design with Tailwind CSS
+
+## License
+
+MIT
