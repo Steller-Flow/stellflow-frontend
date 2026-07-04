@@ -1,36 +1,63 @@
 "use client";
 
-import { ArrowRight, Calendar, LockKeyhole, Users } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowRight,
+  Calendar,
+  Check,
+  Clock,
+  ExternalLink,
+  LockKeyhole,
+  Plus,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 import { DashboardShell } from "../../components/DashboardShell";
-import { useEscrowStore } from "../../lib/escrowStore";
-import {
-  ESCROW_STATE_LABELS,
-  ESCROW_STATE_COLORS,
-} from "../../lib/escrowTypes";
+import { EscrowWizard } from "../../components/escrow/EscrowWizard";
+import { useEscrowStore } from "../../lib/stores/escrowStore";
+
+const STATUS_LABELS = {
+  CREATED: "Created",
+  PENDING: "Pending",
+  FUNDED: "Funded",
+  IN_PROGRESS: "In Progress",
+  SUBMITTED: "Submitted",
+  APPROVED: "Approved",
+  RELEASED: "Released",
+  DISPUTED: "Disputed",
+  CANCELLED: "Cancelled",
+};
+
+const STATUS_COLORS = {
+  CREATED: "bg-surface-container text-text-secondary",
+  PENDING: "bg-status-warning/10 text-status-warning",
+  FUNDED: "bg-status-info/10 text-status-info",
+  IN_PROGRESS: "bg-primary-tint text-primary",
+  SUBMITTED: "bg-secondary-container text-secondary",
+  APPROVED: "bg-status-success/10 text-status-success",
+  RELEASED: "bg-status-success text-on-primary",
+  DISPUTED: "bg-status-error/10 text-status-error",
+  CANCELLED: "bg-surface-container text-text-muted",
+};
 
 export default function EscrowsPage() {
+  const [showWizard, setShowWizard] = useState(false);
   const escrows = useEscrowStore((state) => state.escrows);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
-  const formatAmount = (amount: number) => {
-    return `$${amount.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
-  };
-
-  const shortenAddress = (address: string) => {
-    if (address.length <= 14) return address;
-    return `${address.slice(0, 6)}...${address.slice(-6)}`;
-  };
+  if (showWizard) {
+    return (
+      <DashboardShell
+        activeHref="/dashboard/escrows"
+        title="Create Escrow"
+        description="Set up a new milestone-based escrow for your project."
+      >
+        <EscrowWizard
+          onComplete={() => setShowWizard(false)}
+          onCancel={() => setShowWizard(false)}
+        />
+      </DashboardShell>
+    );
+  }
 
   return (
     <DashboardShell
@@ -43,6 +70,14 @@ export default function EscrowsPage() {
           <p className="text-sm text-text-secondary">
             {escrows.length} escrow{escrows.length !== 1 ? "s" : ""} total
           </p>
+          <button
+            type="button"
+            onClick={() => setShowWizard(true)}
+            className="inline-flex h-11 items-center justify-center gap-sm rounded-lg bg-primary px-lg font-semibold text-on-primary shadow-sm transition hover:bg-primary-hover active:scale-95"
+          >
+            <Plus size={18} />
+            Create Escrow
+          </button>
         </div>
 
         {escrows.length === 0 ? (
@@ -61,7 +96,11 @@ export default function EscrowsPage() {
                 Create a secure escrow, define deliverables, and release funds only
                 when work is approved.
               </p>
-              <button className="inline-flex h-11 items-center justify-center rounded-lg bg-primary px-xl font-semibold text-on-primary transition hover:bg-primary-hover active:scale-95">
+              <button
+                type="button"
+                onClick={() => setShowWizard(true)}
+                className="inline-flex h-11 items-center justify-center rounded-lg bg-primary px-xl font-semibold text-on-primary transition hover:bg-primary-hover active:scale-95"
+              >
                 Create Escrow
               </button>
             </div>
@@ -90,6 +129,9 @@ export default function EscrowsPage() {
                       </p>
                     </div>
                     <span
+                      className={`inline-flex shrink-0 items-center rounded-full px-md py-xs text-sm font-semibold ${STATUS_COLORS[escrow.status]}`}
+                    >
+                      {STATUS_LABELS[escrow.status]}
                       className={`inline-flex shrink-0 items-center rounded-full px-md py-xs text-sm font-semibold ${ESCROW_STATE_COLORS[escrow.state]}`}
                     >
                       {ESCROW_STATE_LABELS[escrow.state]}
@@ -100,21 +142,21 @@ export default function EscrowsPage() {
                     <div>
                       <p className="text-xs text-text-muted">Total</p>
                       <p className="font-semibold text-text-primary">
-                        {formatAmount(escrow.totalAmount)}
+                        ${escrow.totalAmount.toLocaleString()}
                       </p>
                     </div>
                     <div>
                       <p className="text-xs text-text-muted">Released</p>
                       <p className="font-semibold text-status-success">
-                        {formatAmount(escrow.releasedAmount)}
+                        ${escrow.releasedAmount.toLocaleString()}
                       </p>
                     </div>
                     <div className="flex items-center gap-sm">
                       <Users size={14} className="text-text-muted" />
                       <div>
-                        <p className="text-xs text-text-muted">Client</p>
+                        <p className="text-xs text-text-muted">Freelancer</p>
                         <p className="text-sm font-medium text-text-primary">
-                          {escrow.client.name}
+                          {escrow.freelancer.name || "Unknown"}
                         </p>
                       </div>
                     </div>
@@ -123,7 +165,9 @@ export default function EscrowsPage() {
                       <div>
                         <p className="text-xs text-text-muted">Deadline</p>
                         <p className="text-sm font-medium text-text-primary">
-                          {escrow.deadline ? formatDate(escrow.deadline) : "None"}
+                          {escrow.deadline
+                            ? new Date(escrow.deadline).toLocaleDateString()
+                            : "None"}
                         </p>
                       </div>
                     </div>

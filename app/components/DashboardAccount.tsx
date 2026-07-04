@@ -1,7 +1,6 @@
 "use client";
 
-import { Bell, LogOut, WalletCards } from "lucide-react";
-import Link from "next/link";
+import { LogOut, WalletCards } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -12,6 +11,7 @@ import {
   type WalletSession,
 } from "../lib/walletSession";
 import { AuthGuard } from "./AuthGuard";
+import { NotificationCenter } from "./NotificationCenter";
 
 export function DashboardGuard({ children }: { children: React.ReactNode }) {
   return <AuthGuard mode="onboarded">{children}</AuthGuard>;
@@ -35,13 +35,7 @@ export function DashboardAccount() {
 
   return (
     <div className="flex items-center gap-sm">
-      <Link
-        href="/dashboard/notifications"
-        className="rounded-full p-md text-text-secondary transition hover:bg-surface-container-low hover:text-primary"
-        aria-label="Open notifications"
-      >
-        <Bell size={20} />
-      </Link>
+      <NotificationCenter />
       <div className="inline-flex h-11 items-center gap-sm rounded-lg border border-border bg-card-bg px-md font-semibold text-text-primary shadow-sm">
         <WalletCards size={18} className="text-primary" />
         <span>{shortenAddress(session.address)}</span>
