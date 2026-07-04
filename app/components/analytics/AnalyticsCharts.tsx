@@ -259,7 +259,7 @@ export function AnalyticsCharts() {
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: number) => [`${value}%`, "Percentage"]}
+                  formatter={(value) => [`${value}%`, "Percentage"]}
                 />
               </RechartsPieChart>
             </ResponsiveContainer>

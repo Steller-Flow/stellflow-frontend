@@ -6,7 +6,7 @@ type Milestone = {
   title: string;
   description: string;
   amount: number;
-  dueDate: string;
+  dueDate?: string;
 };
 
 type EscrowMilestonesStepProps = {
