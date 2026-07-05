@@ -11,7 +11,9 @@ import {
   ShieldAlert,
   Trash2,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { DashboardShell } from "../../components/DashboardShell";
+import { NotificationsEmptyState } from "../../components/empty-states";
 import { useNotificationStore } from "../../lib/stores/notificationStore";
 import type { Notification, NotificationType } from "../../lib/types";
 
@@ -38,6 +40,7 @@ const NOTIFICATION_COLORS: Record<NotificationType, string> = {
 };
 
 export default function NotificationsPage() {
+  const router = useRouter();
   const {
     notifications,
     unreadCount,
@@ -93,23 +96,7 @@ export default function NotificationsPage() {
         )}
 
         {notifications.length === 0 ? (
-          <div className="rounded-xl border border-divider bg-card-bg p-xl shadow-sm">
-            <div className="mx-auto flex max-w-[520px] flex-col items-center py-2xl text-center">
-              <div className="relative mb-lg">
-                <div className="absolute inset-0 rounded-full bg-primary-container/20 blur-xl" />
-                <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-primary-tint text-primary">
-                  <Bell size={36} />
-                </div>
-              </div>
-              <h2 className="font-display mb-sm text-2xl font-semibold text-text-primary">
-                No notifications yet
-              </h2>
-              <p className="mb-xl text-text-secondary">
-                Funding alerts, payout approvals, dispute updates, and workspace
-                messages will appear here.
-              </p>
-            </div>
-          </div>
+          <NotificationsEmptyState onNavigate={() => router.push("/dashboard")} />
         ) : (
           <div className="rounded-xl border border-divider bg-card-bg shadow-sm">
             <div className="divide-y divide-divider">
