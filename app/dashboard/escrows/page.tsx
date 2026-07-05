@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowRight,
   Calendar,
@@ -12,8 +12,10 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { DashboardShell } from "../../components/DashboardShell";
 import { EscrowWizard } from "../../components/escrow/EscrowWizard";
+import { SkeletonEscrowList } from "../../components/Skeleton";
 import { useEscrowStore } from "../../lib/stores/escrowStore";
 
 const STATUS_LABELS = {
@@ -42,7 +44,13 @@ const STATUS_COLORS = {
 
 export default function EscrowsPage() {
   const [showWizard, setShowWizard] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const escrows = useEscrowStore((state) => state.escrows);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (showWizard) {
     return (
@@ -65,7 +73,25 @@ export default function EscrowsPage() {
       title="Escrows"
       description="Protect contract work with milestone-based escrow workflows."
     >
-      <div className="space-y-lg">
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <motion.div
+            key="skeleton"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <SkeletonEscrowList />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-lg"
+          >
         <div className="flex items-center justify-between">
           <p className="text-sm text-text-secondary">
             {escrows.length} escrow{escrows.length !== 1 ? "s" : ""} total
@@ -212,7 +238,9 @@ export default function EscrowsPage() {
             })}
           </div>
         )}
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </DashboardShell>
   );
 }
