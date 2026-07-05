@@ -68,6 +68,59 @@
   color-scheme: light;
 }
 
+.dark {
+  color-scheme: dark;
+}
+
+.dark {
+  --color-on-primary: #ffffff;
+  --color-card-bg: #1e1e1e;
+  --color-primary-fixed-dim: #7aa05a;
+  --color-surface-tint: #8cb369;
+  --color-outline: #8a8f80;
+  --color-status-error: #f87171;
+  --color-text-secondary: #9ca3af;
+  --color-on-surface: #e1e3e4;
+  --color-escrow-released: #4ade80;
+  --color-primary-container: #6a8c4c;
+  --color-primary-hover: #8cb369;
+  --color-text-primary: #f1f5f9;
+  --color-text-muted: #6b7280;
+  --color-secondary-container: #374151;
+  --color-escrow-disputed: #fbbf24;
+  --color-surface: #111318;
+  --color-background: #111318;
+  --color-secondary: #94a3b8;
+  --color-tertiary-container: #9d6b98;
+  --color-escrow-refunded: #f87171;
+  --color-status-warning: #fbbf24;
+  --color-error-container: #451a1a;
+  --color-primary-fixed: #7aa05a;
+  --color-bg-secondary: #1a1d24;
+  --color-primary-light: #6a8c4c;
+  --color-border: #2d3748;
+  --color-divider: #2d3748;
+  --color-surface-container-lowest: #0d0f12;
+  --color-inverse-primary: #456827;
+  --color-escrow-funded: #60a5fa;
+  --color-status-success: #4ade80;
+  --color-primary-tint: #1a2e10;
+  --color-error: #fca5a5;
+  --color-status-info: #60a5fa;
+  --color-surface-variant: #2d3748;
+  --color-surface-container: #1a1d24;
+  --color-escrow-pending: #6b7280;
+  --color-outline-variant: #374151;
+  --color-surface-bright: #1e2028;
+  --color-surface-container-low: #16181e;
+  --color-surface-container-high: #252830;
+  --color-surface-container-highest: #2d3038;
+  --color-primary: #8cb369;
+  --color-on-primary-container: #c5ef9f;
+  --color-primary-dark: #aad385;
+  --color-surface-dim: #0d0f12;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -79,8 +132,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f8f9fa;
-  color: #111827;
+  background: var(--color-background);
+  color: var(--color-text-primary);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
 
@@ -96,8 +149,8 @@ select {
 }
 
 .brand-field:focus {
-  border-color: #8cb369;
-  box-shadow: 0 0 0 3px rgba(140, 179, 105, 0.15);
+  border-color: var(--color-primary-container);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-container) 15%, transparent);
   outline: none;
 }
 
