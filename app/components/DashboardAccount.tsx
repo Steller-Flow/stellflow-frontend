@@ -12,6 +12,7 @@ import {
 } from "../lib/walletSession";
 import { AuthGuard } from "./AuthGuard";
 import { NotificationCenter } from "./NotificationCenter";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function DashboardGuard({ children }: { children: React.ReactNode }) {
   return <AuthGuard mode="onboarded">{children}</AuthGuard>;
@@ -36,6 +37,7 @@ export function DashboardAccount() {
   return (
     <div className="flex items-center gap-sm">
       <NotificationCenter />
+      <ThemeToggle />
       <div className="inline-flex h-11 items-center gap-sm rounded-lg border border-border bg-card-bg px-md font-semibold text-text-primary shadow-sm">
         <WalletCards size={18} className="text-primary" />
         <span>{shortenAddress(session.address)}</span>
