@@ -23,6 +23,8 @@ describe("walletSession", () => {
         connected: false,
         onboarded: false,
         address: null,
+        balance: null,
+        network: null,
       });
     });
 
@@ -88,6 +90,8 @@ describe("walletSession", () => {
         connected: false,
         onboarded: false,
         address: null,
+        balance: null,
+        network: null,
       });
     });
   });
