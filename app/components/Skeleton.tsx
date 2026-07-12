@@ -4,15 +4,17 @@ import { motion } from "framer-motion";
 
 type SkeletonProps = {
   className?: string;
+  style?: React.CSSProperties;
 };
 
-export function Skeleton({ className = "" }: SkeletonProps) {
+export function Skeleton({ className = "", style }: SkeletonProps) {
   return (
     <motion.div
       initial={{ opacity: 0.6 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
       className={`shimmer rounded bg-surface-container-high ${className}`}
+      style={style}
     />
   );
 }
@@ -51,6 +53,8 @@ export function SkeletonTable({ rows = 5, cols = 4 }: { rows?: number; cols?: nu
   );
 }
 
+const CHART_HEIGHTS = [45, 72, 38, 85, 56, 63, 41];
+
 export function SkeletonChart({ className = "" }: SkeletonProps) {
   return (
     <div className={`rounded-xl border border-divider bg-card-bg p-lg shadow-sm ${className}`}>
@@ -59,11 +63,11 @@ export function SkeletonChart({ className = "" }: SkeletonProps) {
         <Skeleton className="h-5 w-5 rounded-full" />
       </div>
       <div className="h-[200px] flex items-end gap-2">
-        {Array.from({ length: 7 }).map((_, i) => (
+        {CHART_HEIGHTS.map((height, i) => (
           <Skeleton
             key={i}
             className="flex-1"
-            style={{ height: `${30 + Math.random() * 70}%` }}
+            style={{ height: `${height}%` }}
           />
         ))}
       </div>

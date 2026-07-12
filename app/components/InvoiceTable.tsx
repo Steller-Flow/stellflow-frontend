@@ -31,6 +31,23 @@ type InvoiceTableProps = {
 
 type SortableField = InvoiceSort["field"];
 
+function SortIcon({
+  field,
+  currentSort,
+}: {
+  field: SortableField;
+  currentSort: InvoiceSort;
+}) {
+  return (
+    <ArrowUpDown
+      size={14}
+      className={`ml-xs inline ${
+        currentSort.field === field ? "text-primary" : "text-text-muted"
+      }`}
+    />
+  );
+}
+
 export function InvoiceTable({
   invoices,
   sort,
@@ -82,15 +99,6 @@ export function InvoiceTable({
     })}`;
   };
 
-  const SortIcon = ({ field }: { field: SortableField }) => (
-    <ArrowUpDown
-      size={14}
-      className={`ml-xs inline ${
-        sort.field === field ? "text-primary" : "text-text-muted"
-      }`}
-    />
-  );
-
   return (
     <div className="rounded-xl border border-divider bg-card-bg shadow-sm">
       <div className="overflow-x-auto">
@@ -114,35 +122,35 @@ export function InvoiceTable({
                 onClick={() => handleSort("invoiceNumber")}
               >
                 Invoice
-                <SortIcon field="invoiceNumber" />
+                <SortIcon field="invoiceNumber" currentSort={sort} />
               </th>
               <th
                 className="cursor-pointer px-md py-lg text-left font-semibold text-text-muted hover:text-text-primary"
                 onClick={() => handleSort("clientName")}
               >
                 Client
-                <SortIcon field="clientName" />
+                <SortIcon field="clientName" currentSort={sort} />
               </th>
               <th
                 className="cursor-pointer px-md py-lg text-left font-semibold text-text-muted hover:text-text-primary"
                 onClick={() => handleSort("status")}
               >
                 Status
-                <SortIcon field="status" />
+                <SortIcon field="status" currentSort={sort} />
               </th>
               <th
                 className="cursor-pointer px-md py-lg text-right font-semibold text-text-muted hover:text-text-primary"
                 onClick={() => handleSort("total")}
               >
                 Amount
-                <SortIcon field="total" />
+                <SortIcon field="total" currentSort={sort} />
               </th>
               <th
                 className="cursor-pointer px-md py-lg text-left font-semibold text-text-muted hover:text-text-primary"
                 onClick={() => handleSort("dueDate")}
               >
                 Due Date
-                <SortIcon field="dueDate" />
+                <SortIcon field="dueDate" currentSort={sort} />
               </th>
               <th className="w-12 px-md py-lg"></th>
             </tr>

@@ -6,6 +6,7 @@ import type { Escrow, EscrowMilestone, EscrowTransaction } from "./escrowTypes";
 type EscrowStore = {
   escrows: Escrow[];
   getEscrow: (id: string) => Escrow | undefined;
+  addEscrow: (escrow: Escrow) => void;
   updateMilestoneStatus: (
     escrowId: string,
     milestoneId: string,
@@ -275,6 +276,11 @@ export const useEscrowStore = create<EscrowStore>((set, get) => ({
   escrows: sampleEscrows,
 
   getEscrow: (id) => get().escrows.find((esc) => esc.id === id),
+
+  addEscrow: (escrow) =>
+    set((state) => ({
+      escrows: [...state.escrows, escrow],
+    })),
 
   updateMilestoneStatus: (escrowId, milestoneId, status) =>
     set((state) => ({

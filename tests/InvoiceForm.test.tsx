@@ -157,6 +157,13 @@ describe("InvoiceForm", () => {
       expect(screen.getByText("Line Items")).toBeInTheDocument();
     });
 
+    await user.type(screen.getByPlaceholderText("Service or product"), "Web Development");
+    const qtyInput = screen.getAllByRole("spinbutton")[0];
+    await user.clear(qtyInput);
+    await user.type(qtyInput, "2");
+    const priceInput = screen.getAllByRole("spinbutton")[1];
+    await user.clear(priceInput);
+    await user.type(priceInput, "100");
     await user.click(screen.getByText("Continue"));
 
     await waitFor(() => {

@@ -14,9 +14,9 @@ import { EscrowAmountStep } from "./EscrowAmountStep";
 import { EscrowMilestonesStep } from "./EscrowMilestonesStep";
 import { EscrowReviewStep } from "./EscrowReviewStep";
 import { EscrowConfirmationStep } from "./EscrowConfirmationStep";
-import { useEscrowStore } from "../../lib/stores/escrowStore";
+import { useEscrowStore } from "../../lib/escrowStore";
 import { useAuthStore } from "../../lib/stores/authStore";
-import type { Escrow, EscrowMilestone, EscrowParty } from "../../lib/types";
+import type { Escrow, EscrowMilestone, EscrowParty } from "../../lib/escrowTypes";
 
 const escrowSchema = z.object({
   freelancerAddress: z.string().min(56, "Invalid Stellar address"),
@@ -72,8 +72,26 @@ export function EscrowWizard({ onComplete, onCancel }: EscrowWizardProps) {
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
+  const validateStep = (): boolean => {
+    switch (currentStep) {
+      case 1:
+        return formData.freelancerName.length >= 1 && formData.freelancerAddress.length === 56;
+      case 2:
+        return formData.title.length >= 3 && formData.description.length >= 10 && formData.totalAmount > 0;
+      case 3:
+        return (
+          formData.milestones.length >= 1 &&
+          formData.milestones.every(
+            (m) => m.title.length >= 1 && m.description.length >= 1 && m.amount > 0
+          )
+        );
+      default:
+        return true;
+    }
+  };
+
   const nextStep = () => {
-    if (currentStep < steps.length) {
+    if (currentStep < steps.length && validateStep()) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -124,7 +142,7 @@ export function EscrowWizard({ onComplete, onCancel }: EscrowWizardProps) {
         id: `esc_${Date.now()}`,
         title: formData.title,
         description: formData.description,
-        status: "FUNDED",
+        state: "FUNDED",
         client,
         freelancer,
         totalAmount: formData.totalAmount,
@@ -195,7 +213,7 @@ export function EscrowWizard({ onComplete, onCancel }: EscrowWizardProps) {
   };
 
   const isLastStep = currentStep === steps.length;
-  const canProceed = currentStep < 4 || currentStep === 5;
+  const canProceed = validateStep();
 
   return (
     <div className="w-full max-w-3xl">
@@ -262,7 +280,7 @@ export function EscrowWizard({ onComplete, onCancel }: EscrowWizardProps) {
           <button
             type="button"
             onClick={currentStep === 4 ? handleSubmit : nextStep}
-            disabled={isSubmitting}
+            disabled={isSubmitting || (!canProceed && currentStep !== 5)}
             className="inline-flex h-11 items-center justify-center gap-sm rounded-lg bg-primary px-lg font-semibold text-on-primary shadow-sm transition hover:bg-primary-hover active:scale-95 disabled:opacity-50"
           >
             {currentStep === 4 ? (

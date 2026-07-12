@@ -33,12 +33,6 @@ export function WalletInfo({ showBalance = true, compact = false }: WalletInfoPr
     return onWalletSessionChange(syncSession);
   }, []);
 
-  useEffect(() => {
-    if (session.connected && session.address && showBalance) {
-      refreshBalance();
-    }
-  }, [session.connected, session.address, showBalance]);
-
   const refreshBalance = async () => {
     if (!session.address) return;
 
@@ -56,6 +50,13 @@ export function WalletInfo({ showBalance = true, compact = false }: WalletInfoPr
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (session.connected && session.address && showBalance) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      refreshBalance();
+    }
+  }, [session.connected, session.address, showBalance, refreshBalance]);
 
   if (!session.connected) {
     return (

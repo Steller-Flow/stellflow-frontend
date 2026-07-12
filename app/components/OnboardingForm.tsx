@@ -23,7 +23,7 @@ import { completeOnboarding } from "../lib/walletSession";
 
 const walletSchema = z.object({
   walletConnected: z.literal(true, {
-    errorMap: () => ({ message: "Please connect your wallet to continue" }),
+    message: "Please connect your wallet to continue",
   }),
 });
 
