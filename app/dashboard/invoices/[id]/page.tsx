@@ -54,7 +54,7 @@ export default function InvoiceDetailPage() {
             Invoice not found
           </h2>
           <p className="mt-sm text-text-secondary">
-            This invoice may have been deleted or doesn't exist.
+            This invoice may have been deleted or doesn&apos;t exist.
           </p>
           <Link
             href="/dashboard/invoices"
