@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./lib/theme";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { ToastProvider } from "./components/ToastProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,7 +34,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${plusJakarta.variable}`} suppressHydrationWarning>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
+          <ToastProvider />
+        </ThemeProvider>
       </body>
     </html>
   );
