@@ -4,9 +4,6 @@ import { useState, useEffect } from "react";
 import {
   ArrowRight,
   Calendar,
-  Check,
-  Clock,
-  ExternalLink,
   LockKeyhole,
   Plus,
   Users,
@@ -16,31 +13,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DashboardShell } from "../../components/DashboardShell";
 import { EscrowWizard } from "../../components/escrow/EscrowWizard";
 import { SkeletonEscrowList } from "../../components/Skeleton";
-import { useEscrowStore } from "../../lib/stores/escrowStore";
-
-const STATUS_LABELS = {
-  CREATED: "Created",
-  PENDING: "Pending",
-  FUNDED: "Funded",
-  IN_PROGRESS: "In Progress",
-  SUBMITTED: "Submitted",
-  APPROVED: "Approved",
-  RELEASED: "Released",
-  DISPUTED: "Disputed",
-  CANCELLED: "Cancelled",
-};
-
-const STATUS_COLORS = {
-  CREATED: "bg-surface-container text-text-secondary",
-  PENDING: "bg-status-warning/10 text-status-warning",
-  FUNDED: "bg-status-info/10 text-status-info",
-  IN_PROGRESS: "bg-primary-tint text-primary",
-  SUBMITTED: "bg-secondary-container text-secondary",
-  APPROVED: "bg-status-success/10 text-status-success",
-  RELEASED: "bg-status-success text-on-primary",
-  DISPUTED: "bg-status-error/10 text-status-error",
-  CANCELLED: "bg-surface-container text-text-muted",
-};
+import { useEscrowStore } from "../../lib/escrowStore";
+import {
+  ESCROW_STATE_LABELS,
+  ESCROW_STATE_COLORS,
+} from "../../lib/escrowTypes";
 
 export default function EscrowsPage() {
   const [showWizard, setShowWizard] = useState(false);
@@ -155,9 +132,6 @@ export default function EscrowsPage() {
                       </p>
                     </div>
                     <span
-                      className={`inline-flex shrink-0 items-center rounded-full px-md py-xs text-sm font-semibold ${STATUS_COLORS[escrow.status]}`}
-                    >
-                      {STATUS_LABELS[escrow.status]}
                       className={`inline-flex shrink-0 items-center rounded-full px-md py-xs text-sm font-semibold ${ESCROW_STATE_COLORS[escrow.state]}`}
                     >
                       {ESCROW_STATE_LABELS[escrow.state]}
