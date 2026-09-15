@@ -1,6 +1,6 @@
 import { LandingNav } from "./components/LandingNav";
 import { HeroSection } from "./components/landing/HeroSection";
-import { MetricsSection } from "./components/landing/MetricsSection";
+import { ContractSection } from "./components/landing/ContractSection";
 import { ProblemsSection } from "./components/landing/ProblemsSection";
 import { FeaturesSection } from "./components/landing/FeaturesSection";
 import { HowItWorksSection } from "./components/landing/HowItWorksSection";
@@ -13,7 +13,7 @@ export default function Home() {
     <div className="overflow-x-hidden bg-background text-text-primary">
       <LandingNav />
       <HeroSection />
-      <MetricsSection />
+      <ContractSection />
       <ProblemsSection />
       <FeaturesSection />
       <HowItWorksSection />

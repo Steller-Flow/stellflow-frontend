@@ -42,8 +42,11 @@ export function LandingDashboardPreview() {
                 45,280.50 USDC
               </p>
             </div>
-            <div className="flex h-8 w-24 items-center justify-center rounded bg-primary-tint">
-              <span className="text-xs font-bold text-primary">+12.5%</span>
+            <div
+              className="flex h-8 items-center justify-center rounded bg-primary-tint px-sm"
+              title="Illustrative mock-up — not live data"
+            >
+              <span className="text-xs font-bold text-primary">Illustrative preview</span>
             </div>
           </div>
 
