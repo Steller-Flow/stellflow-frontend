@@ -15,6 +15,8 @@ import { DashboardShell } from "../../components/DashboardShell";
 import { EscrowWizard } from "../../components/escrow/EscrowWizard";
 import { SkeletonEscrowList } from "../../components/Skeleton";
 import { useEscrowStore } from "../../lib/escrowStore";
+import { DEMO_MODE } from "../../lib/demo";
+import { SampleTag } from "../../components/SampleDataBanner";
 import {
   ESCROW_STATE_LABELS,
   ESCROW_STATE_COLORS,
@@ -75,6 +77,7 @@ export default function EscrowsPage() {
         <div className="flex items-center justify-between">
           <p className="text-sm text-text-secondary">
             {escrows.length} escrow{escrows.length !== 1 ? "s" : ""} total
+            {DEMO_MODE && <SampleTag />}
           </p>
           <button
             type="button"

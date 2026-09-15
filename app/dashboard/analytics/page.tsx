@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { DashboardShell } from "../../components/DashboardShell";
 import { AnalyticsCharts } from "../../components/analytics/AnalyticsCharts";
 import { SkeletonAnalytics } from "../../components/Skeleton";
+import { AnalyticsEmptyState } from "../../components/empty-states";
+import { DEMO_MODE } from "../../lib/demo";
 
 export default function AnalyticsPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -38,7 +42,11 @@ export default function AnalyticsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <AnalyticsCharts />
+            {DEMO_MODE ? (
+              <AnalyticsCharts />
+            ) : (
+              <AnalyticsEmptyState onNavigate={() => router.push("/dashboard/invoices/new")} />
+            )}
           </motion.div>
         )}
       </AnimatePresence>

@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brand } from "./Brand";
 import { DashboardAccount, DashboardGuard } from "./DashboardAccount";
+import { SampleDataBanner } from "./SampleDataBanner";
 import { useUIStore } from "../lib/stores/uiStore";
 
 type IconComponent = React.ComponentType<{ size?: number; className?: string }>;
@@ -241,6 +242,8 @@ export function DashboardShell({
             </div>
             <DashboardAccount />
           </header>
+
+          <SampleDataBanner />
 
           {children}
         </motion.main>

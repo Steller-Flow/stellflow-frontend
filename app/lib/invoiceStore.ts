@@ -10,6 +10,7 @@ import type {
   InvoiceStatus,
   InvoiceLineItem,
 } from "./invoiceTypes";
+import { DEMO_MODE } from "./demo";
 
 type InvoiceStore = {
   invoices: Invoice[];
@@ -156,10 +157,10 @@ const sampleInvoices: Invoice[] = [
 ];
 
 export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
-  invoices: sampleInvoices,
+  invoices: DEMO_MODE ? sampleInvoices : [],
   filter: {},
   sort: { field: "createdAt", direction: "desc" },
-  pagination: { page: 1, pageSize: 10, total: sampleInvoices.length },
+  pagination: { page: 1, pageSize: 10, total: DEMO_MODE ? sampleInvoices.length : 0 },
   selectedIds: [],
 
   setFilter: (filter) =>

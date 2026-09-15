@@ -9,7 +9,9 @@ import { InvoiceFilters } from "../../components/InvoiceFilters";
 import { InvoiceTable } from "../../components/InvoiceTable";
 import { SkeletonInvoiceList } from "../../components/Skeleton";
 import { useInvoiceStore } from "../../lib/invoiceStore";
+import { DEMO_MODE } from "../../lib/demo";
 import toast from "react-hot-toast";
+import { SampleTag } from "../../components/SampleDataBanner";
 
 export default function InvoicesPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -92,6 +94,7 @@ export default function InvoicesPage() {
                 <p className="text-sm text-text-secondary">
                   {filteredInvoices.length} invoice
                   {filteredInvoices.length !== 1 ? "s" : ""} total
+                  {DEMO_MODE && <SampleTag />}
                 </p>
               </div>
               <Link

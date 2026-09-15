@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { DEMO_MODE } from "./demo";
 import type { Escrow, EscrowMilestone, EscrowTransaction } from "./escrowTypes";
 
 type EscrowStore = {
@@ -273,7 +274,7 @@ const sampleEscrows: Escrow[] = [
 ];
 
 export const useEscrowStore = create<EscrowStore>((set, get) => ({
-  escrows: sampleEscrows,
+  escrows: DEMO_MODE ? sampleEscrows : [],
 
   getEscrow: (id) => get().escrows.find((esc) => esc.id === id),
 
