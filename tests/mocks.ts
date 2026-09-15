@@ -13,6 +13,7 @@ export function mockFreighter() {
   };
 }
 
+/** Shape for vi.mock("@stellar/stellar-sdk") in Horizon-touching tests. */
 export function mockStellarSdk() {
   return {
     Server: vi.fn().mockImplementation(() => ({

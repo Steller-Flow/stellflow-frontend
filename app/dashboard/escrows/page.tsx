@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { ContractStatus } from "../../components/ContractStatus";
 import { DashboardShell } from "../../components/DashboardShell";
 import { EscrowWizard } from "../../components/escrow/EscrowWizard";
 import { SkeletonEscrowList } from "../../components/Skeleton";
@@ -69,6 +70,8 @@ export default function EscrowsPage() {
             transition={{ duration: 0.3 }}
             className="space-y-lg"
           >
+        <ContractStatus compact />
+
         <div className="flex items-center justify-between">
           <p className="text-sm text-text-secondary">
             {escrows.length} escrow{escrows.length !== 1 ? "s" : ""} total

@@ -6,7 +6,7 @@ import {
   getNetwork,
   signTransaction,
 } from "@stellar/freighter-api";
-import { Horizon } from "stellar-sdk";
+import { Horizon } from "@stellar/stellar-sdk";
 
 export type FreighterWalletInfo = {
   address: string;

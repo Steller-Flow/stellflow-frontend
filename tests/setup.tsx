@@ -19,7 +19,9 @@ vi.mock("next/image", () => ({
   ),
 }));
 
-Object.defineProperty(window, "matchMedia", {
+// Some suites opt into `// @vitest-environment node` (the Soroban client:
+// the Stellar SDK's XDR encoder rejects jsdom's cross-realm Uint8Array).
+if (typeof window !== "undefined") Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
