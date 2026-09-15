@@ -47,3 +47,36 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  e2e:
+    name: E2E (Playwright, production build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: ci
+    env:
+      NEXT_PUBLIC_API_URL: http://localhost:3001/api
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      # playwright.config.ts builds and serves a production bundle itself.
+      - name: Run e2e
+        run: npm run test:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7

@@ -58,6 +58,20 @@ npm run build         # next build
 `npm run lint` currently exits 0 with warnings; don't add to them (#55 will
 turn on `--max-warnings 0`).
 
+There is also a small Playwright suite in `e2e/` that builds a **production**
+bundle, serves it, and drives the wallet-connect flow in a real browser with
+a fake Freighter extension. It exists because the modal-layout bug that
+motivated it is invisible to jsdom. Run it before touching anything under
+`/connect-wallet`, `AuthGuard`, or `app/globals.css`:
+
+```bash
+npx playwright install chromium        # once
+npm run test:e2e                       # ~2 min: next build + 3 tests
+PLAYWRIGHT_CHANNEL=chrome npm run test:e2e   # or use your installed Chrome
+```
+
+CI runs it as a separate job after typecheck/lint/test/build.
+
 ## Pull request expectations
 
 - **One issue per PR.** Keep unrelated changes out; open a second PR instead.
@@ -96,6 +110,11 @@ turn on `--max-warnings 0`).
   (`bg-primary`, `p-md`, `rounded-xl`, `text-text-secondary`, …). Use those
   rather than hex codes or arbitrary `[…]` values, and check both themes
   with the toggle in the dashboard header.
+- **Never write `max-w-md` / `w-lg` / `min-w-sm` etc.** The named spacing
+  tokens (`--spacing-md` …) share names with Tailwind's container scale, and
+  the width utilities resolve spacing first, so `max-w-md` is 16px here.
+  Use `max-w-(--container-md)`. `tests/tailwindTokens.test.ts` fails the
+  build if a bare one sneaks in.
 - **Don't change application logic in a docs or CI PR**, and vice versa.
 - **Never commit secrets.** `.env*` is git-ignored except `.env.example`;
   if you add a `NEXT_PUBLIC_*` variable, add it there with a comment and to
