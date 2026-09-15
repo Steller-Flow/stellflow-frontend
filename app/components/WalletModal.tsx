@@ -123,7 +123,7 @@ export function WalletModal({ defaultOpen = false, className = "" }: WalletModal
           role="dialog"
           aria-modal="true"
           aria-labelledby="wallet-modal-title"
-          className={`w-full max-w-md overflow-hidden rounded-xl border border-divider bg-card-bg shadow-2xl transition-transform duration-300 ${
+          className={`w-full max-w-(--container-md) overflow-hidden rounded-xl border border-divider bg-card-bg shadow-2xl transition-transform duration-300 ${
             open ? "scale-100" : "scale-95"
           }`}
         >

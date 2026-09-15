@@ -189,7 +189,7 @@ export function SkeletonAnalytics() {
         <SkeletonChart />
       </div>
 
-      <SkeletonChart className="max-w-lg mx-auto" />
+      <SkeletonChart className="max-w-(--container-lg) mx-auto" />
     </div>
   );
 }

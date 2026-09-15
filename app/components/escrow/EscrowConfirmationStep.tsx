@@ -78,7 +78,7 @@ export function EscrowConfirmationStep({
             </p>
           </div>
           {txHash && (
-            <div className="mx-auto max-w-sm rounded-lg bg-surface-container-low p-md">
+            <div className="mx-auto max-w-(--container-sm) rounded-lg bg-surface-container-low p-md">
               <p className="mb-xs text-xs font-semibold uppercase text-text-muted">
                 Transaction Hash
               </p>

@@ -216,7 +216,7 @@ export function EscrowWizard({ onComplete, onCancel }: EscrowWizardProps) {
   const canProceed = validateStep();
 
   return (
-    <div className="w-full max-w-3xl">
+    <div className="w-full max-w-(--container-3xl)">
       {/* Progress Steps */}
       <div className="mb-xl">
         <div className="flex items-center justify-between">

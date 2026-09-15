@@ -48,6 +48,13 @@
   --color-primary-dark: #6a8c4c;
   --color-surface-dim: #d9dadb;
 
+  /*
+   * Named spacing tokens. Note the names collide with Tailwind's container
+   * scale (--container-sm/md/lg/…), and the w-*, min-w-* and max-w-* utilities
+   * resolve --spacing-* BEFORE --container-*, so `max-w-md` here means 16px,
+   * not 28rem. For container widths use the explicit token form:
+   * `max-w-(--container-md)`. tests/tailwindTokens.test.ts enforces this.
+   */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-base: 8px;
@@ -154,8 +161,16 @@ select {
   outline: none;
 }
 
+/*
+ * `backwards`, not `both`: the element must look like the `from` frame during
+ * its animation-delay, but once the animation ends it has to return to its
+ * natural styles. A `forwards`/`both` fill keeps `transform: translateY(0)`
+ * applied forever, and any transformed element becomes the containing block
+ * for `position: fixed` descendants — which pinned the wallet modal's
+ * full-screen overlay inside the connect-wallet card.
+ */
 .fade-up {
-  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 .float-soft {

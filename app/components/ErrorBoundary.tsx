@@ -47,12 +47,12 @@ export class ErrorBoundary extends Component<
           <h2 className="font-display mb-sm text-2xl font-semibold text-text-primary">
             Something went wrong
           </h2>
-          <p className="mb-xl max-w-md text-text-secondary">
+          <p className="mb-xl max-w-(--container-md) text-text-secondary">
             An unexpected error occurred. Please try refreshing the page or
             contact support if the problem persists.
           </p>
           {this.state.error && (
-            <p className="mb-lg max-w-lg rounded-lg bg-surface-container-low p-md font-mono text-xs text-text-muted">
+            <p className="mb-lg max-w-(--container-lg) rounded-lg bg-surface-container-low p-md font-mono text-xs text-text-muted">
               {this.state.error.message}
             </p>
           )}
