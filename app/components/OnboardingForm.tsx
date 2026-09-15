@@ -15,6 +15,7 @@ import {
   User,
   Wallet,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -74,6 +75,7 @@ function FieldIcon({ children }: { children: React.ReactNode }) {
 }
 
 export function OnboardingForm() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const lastStep = step === steps.length - 1;
@@ -120,7 +122,7 @@ export function OnboardingForm() {
       if (!valid) return;
     } else if (step === 3) {
       completeOnboarding();
-      window.location.href = "/dashboard";
+      router.push("/dashboard");
       return;
     }
     setStep((current) => current + 1);
