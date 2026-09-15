@@ -6,8 +6,6 @@ import {
   ArrowRight,
   Calendar,
   Check,
-  DollarSign,
-  FileText,
   Globe2,
   Mail,
   Plus,
@@ -15,9 +13,8 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useWatch, useFieldArray } from "react-hook-form";
 import { z } from "zod";
-import type { Currency } from "../lib/invoiceTypes";
 import { CURRENCY_SYMBOLS } from "../lib/invoiceTypes";
 
 const lineItemSchema = z.object({
@@ -61,6 +58,18 @@ function FieldIcon({ children }: { children: React.ReactNode }) {
 
 export function InvoiceForm({ onSubmit, onCancel }: InvoiceFormProps) {
   const [step, setStep] = useState(0);
+
+  const [defaultDates] = useState(() => {
+    const issueDate = new Date();
+    const dueDate = new Date(issueDate);
+    dueDate.setDate(dueDate.getDate() + 30);
+
+    return{
+      issueDate: issueDate.toISOString().split("T")[0],
+      dueDate: dueDate.toISOString().split("T")[0],
+    };
+  });
+
   const lastStep = step === steps.length - 1;
 
   const form = useForm<InvoiceFormData>({
@@ -69,10 +78,8 @@ export function InvoiceForm({ onSubmit, onCancel }: InvoiceFormProps) {
       clientName: "",
       clientEmail: "",
       clientAddress: "",
-      issueDate: new Date().toISOString().split("T")[0],
-      dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-        .toISOString()
-        .split("T")[0],
+      issueDate: defaultDates.issueDate,
+      dueDate: defaultDates.dueDate,
       currency: "USDC",
       lineItems: [{ description: "", quantity: 1, unitPrice: 0 }],
       taxRate: 0,
@@ -85,9 +92,20 @@ export function InvoiceForm({ onSubmit, onCancel }: InvoiceFormProps) {
     name: "lineItems",
   });
 
-  const watchedLineItems = form.watch("lineItems");
-  const watchedTaxRate = form.watch("taxRate");
-  const watchedCurrency = form.watch("currency");
+  const watchedLineItems = useWatch({
+    control: form.control,
+    name: "lineItems",
+  })
+
+  const watchedTaxRate = useWatch({
+    control: form.control,
+    name: "taxRate",
+  })
+
+  const watchedCurrency = useWatch({
+    control: form.control,
+    name: "currency"
+  })
 
   const subtotal = watchedLineItems.reduce(
     (sum, item) => sum + (item.quantity || 0) * (item.unitPrice || 0),

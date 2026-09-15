@@ -264,7 +264,7 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
     })),
 
   getFilteredInvoices: () => {
-    const { invoices, filter, sort, pagination } = get();
+    const { invoices, filter, sort } = get();
 
     let filtered = [...invoices];
 
