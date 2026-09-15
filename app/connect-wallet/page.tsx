@@ -8,9 +8,9 @@ export default function ConnectWalletPage() {
     <main className="min-h-screen bg-[radial-gradient(circle_at_0%_0%,rgba(140,179,105,0.12),transparent_30%),radial-gradient(circle_at_100%_100%,rgba(217,223,245,0.62),transparent_34%),#f8f9fa] px-md py-xl text-text-primary sm:px-xl sm:py-2xl">
       <section className="mx-auto grid min-h-[calc(100vh-64px)] w-full max-w-[1120px] items-center gap-2xl lg:grid-cols-[minmax(0,1fr)_440px]">
         <div className="min-w-0 fade-up">
-          <Link href="/" className="mb-2xl inline-flex w-fit">
+          <div className="mb-2xl inline-flex w-fit">
             <Brand caption="Enterprise Finance" />
-          </Link>
+          </div>
           <p className="mb-md inline-flex items-center gap-sm rounded-full bg-primary-tint px-md py-xs text-sm font-semibold text-primary">
             <ShieldCheck size={16} />
             Secure Stellar wallet handoff
