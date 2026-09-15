@@ -33,7 +33,7 @@ function getHorizonUrl(network: string): string {
 }
 
 function mapFreighterError(error: unknown): FreighterError {
-  const err = error as { code?: string; message?: string; detail?: string };
+  const err = error as { code?: string | number; message?: string; detail?: string };
 
   if (err?.code === "NOT_FOUND" || err?.message?.includes("not installed")) {
     return {
@@ -43,7 +43,10 @@ function mapFreighterError(error: unknown): FreighterError {
     };
   }
 
-  if (err?.code === "USER_REJECTED" || err?.message?.includes("rejected")) {
+  if (
+    err?.code === "USER_REJECTED" ||
+    /rejected|declined|denied|not allowed/i.test(err?.message ?? "")
+  ) {
     return {
       code: "CONNECTION_REJECTED",
       message: "Connection request was rejected",
@@ -66,6 +69,26 @@ function mapFreighterError(error: unknown): FreighterError {
   };
 }
 
+/**
+ * @stellar/freighter-api v6 never rejects. Every call resolves an object with
+ * an optional `error`; on failure the data fields are empty strings. Turn
+ * that shape back into a thrown FreighterError so callers can't mistake an
+ * empty address for a connected wallet.
+ */
+function unwrap<T extends { error?: { code?: number; message?: string } }>(
+  response: T,
+  isEmpty: (response: T) => boolean,
+  emptyMessage: string
+): T {
+  if (response.error) {
+    throw mapFreighterError(response.error);
+  }
+  if (isEmpty(response)) {
+    throw mapFreighterError({ code: "UNKNOWN_ERROR", message: emptyMessage });
+  }
+  return response;
+}
+
 export async function checkFreighterInstalled(): Promise<boolean> {
   try {
     const result = await isConnected();
@@ -86,16 +109,21 @@ export async function connectFreighter(): Promise<{
   }
 
   try {
-    const response = await requestAccess();
-    if ("address" in response) {
-      const networkInfo = await getNetwork();
-      return {
-        address: response.address,
-        network: networkInfo.network,
-        networkPassphrase: networkInfo.networkPassphrase,
-      };
-    }
-    throw mapFreighterError({ code: "UNKNOWN_ERROR", message: "Invalid response from Freighter" });
+    const { address } = unwrap(
+      await requestAccess(),
+      (r) => !r.address,
+      "Freighter did not return an address"
+    );
+    const networkInfo = unwrap(
+      await getNetwork(),
+      (r) => !r.network || !r.networkPassphrase,
+      "Freighter did not return a network"
+    );
+    return {
+      address,
+      network: networkInfo.network,
+      networkPassphrase: networkInfo.networkPassphrase,
+    };
   } catch (error) {
     if ((error as FreighterError).code) {
       throw error;
