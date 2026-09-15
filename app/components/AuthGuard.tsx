@@ -1,8 +1,9 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { getWalletSession } from "../lib/walletSession";
+import { useWalletSession, type WalletSession } from "../lib/walletSession";
 
 type AuthGuardMode = "connect" | "onboarded";
 
@@ -11,26 +12,41 @@ type AuthGuardProps = {
   children: React.ReactNode;
 };
 
+function redirectTarget(mode: AuthGuardMode, session: WalletSession): string | null {
+  if (!session.connected) return "/connect-wallet";
+  if (mode === "onboarded" && !session.onboarded) return "/onboarding";
+  if (mode === "connect" && session.onboarded) return "/dashboard";
+  return null;
+}
+
+/**
+ * Client-side route guard. The session lives in localStorage, which the
+ * server cannot see, so the guard renders a placeholder until the session
+ * has been read on the client, then either redirects or reveals children.
+ * The placeholder is what the server renders too, so hydration always
+ * matches.
+ */
 export function AuthGuard({ mode, children }: AuthGuardProps) {
   const router = useRouter();
-  const session = getWalletSession();
-
-  const needsRedirect =
-    !session.connected ||
-    (mode === "onboarded" && !session.onboarded) ||
-    (mode === "connect" && session.onboarded);
+  const { session, ready } = useWalletSession();
+  const target = ready ? redirectTarget(mode, session) : null;
 
   useEffect(() => {
-    if (!session.connected) {
-      router.replace("/connect-wallet");
-    } else if (mode === "onboarded" && !session.onboarded) {
-      router.replace("/onboarding");
-    } else if (mode === "connect" && session.onboarded) {
-      router.replace("/dashboard");
-    }
-  }, [router, mode, session.connected, session.onboarded]);
+    if (target) router.replace(target);
+  }, [router, target]);
 
-  if (needsRedirect) return null;
+  if (!ready || target) {
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        className="flex min-h-screen items-center justify-center text-text-muted"
+      >
+        <Loader2 size={24} className="animate-spin" aria-hidden="true" />
+        <span className="sr-only">Checking your session</span>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }

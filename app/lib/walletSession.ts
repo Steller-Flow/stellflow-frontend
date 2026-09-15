@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 const WALLET_CONNECTED_KEY = "stellflow_wallet_connected";
 const WALLET_ADDRESS_KEY = "stellflow_wallet_address";
 const WALLET_NETWORK_KEY = "stellflow_wallet_network";
@@ -15,13 +17,21 @@ export type WalletSession = {
   balance: string | null;
 };
 
+export const EMPTY_SESSION: WalletSession = {
+  connected: false,
+  onboarded: false,
+  address: null,
+  network: null,
+  balance: null,
+};
+
 function canUseStorage() {
   return typeof window !== "undefined";
 }
 
 export function getWalletSession(): WalletSession {
   if (!canUseStorage()) {
-    return { connected: false, onboarded: false, address: null, network: null, balance: null };
+    return EMPTY_SESSION;
   }
 
   return {
@@ -94,6 +104,40 @@ export function onWalletSessionChange(callback: () => void) {
     window.removeEventListener(SESSION_EVENT, callback);
     window.removeEventListener("storage", handleStorage);
   };
+}
+
+export type WalletSessionState = {
+  session: WalletSession;
+  /**
+   * false until the first client-side read of localStorage has happened.
+   * On the server, and during hydration, it is always false, so a component
+   * that renders on `session` must render the same "not yet known" output in
+   * both places and only branch once `ready` is true.
+   */
+  ready: boolean;
+};
+
+/**
+ * Subscribe a component to the wallet session without reading localStorage
+ * during render. Reading it during render is a hydration mismatch waiting to
+ * happen: the server has no localStorage, so it renders the logged-out tree,
+ * and a browser that does have a session renders the logged-in tree on its
+ * first pass — React then discards the server HTML and logs error #418.
+ */
+export function useWalletSession(): WalletSessionState {
+  const [state, setState] = useState<WalletSessionState>({
+    session: EMPTY_SESSION,
+    ready: false,
+  });
+
+  useEffect(() => {
+    const syncSession = () => setState({ session: getWalletSession(), ready: true });
+
+    syncSession();
+    return onWalletSessionChange(syncSession);
+  }, []);
+
+  return state;
 }
 
 export function shortenAddress(address: string | null) {
