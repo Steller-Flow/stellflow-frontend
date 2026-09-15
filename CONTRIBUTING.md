@@ -24,7 +24,8 @@ npm ci
 npm test
 ```
 
-You should see 6 files / 36 tests pass.
+You should see 12 files / 65 tests pass. Nothing in the unit suite touches
+the network: the Soroban RPC client is tested with `rpc.Server` mocked.
 
 To run the app itself, `npm run dev` and open http://localhost:3000. No
 `.env` is required; `.env.example` lists the one variable the code reads.
@@ -87,6 +88,14 @@ CI runs it as a separate job after typecheck/lint/test/build.
   from `tests/mocks.ts` and clear it in `afterEach` with
   `clearWalletSession()`. Store tests don't need rendering: call
   `useInvoiceStore.getState().addInvoice(...)` and assert on `getState()`.
+- **Suites that use the Stellar SDK's XDR run under Node.** Put
+  `// @vitest-environment node` at the top of any test that builds or
+  decodes XDR (see `tests/soroban.test.ts`); the SDK rejects jsdom's
+  cross-realm `Uint8Array`. Mock `rpc.Server#simulateTransaction` and let
+  the real SDK do the encoding, so the u64 argument and the struct decode
+  are exercised for real. Use `mockClear`, not `mockReset`, on that spy —
+  after `mockReset` vitest 4 reports a rejection thrown inside the mock as
+  a test failure even when the code under test catches it.
 - **Mock the wallet, never require it.** A test must not depend on the
   Freighter extension or on Horizon being reachable. Tests that touch
   `app/lib/freighter.ts` should `vi.mock("@stellar/freighter-api")` (and
