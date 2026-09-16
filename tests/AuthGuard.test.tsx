@@ -4,7 +4,6 @@ import { AuthGuard } from "../app/components/AuthGuard";
 import {
   connectWallet,
   completeOnboarding,
-  logoutWallet,
 } from "../app/lib/walletSession";
 
 const mockPush = vi.fn();

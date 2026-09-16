@@ -6,7 +6,6 @@ import {
   ArrowRight,
   BriefcaseBusiness,
   Building2,
-  Check,
   CheckCircle2,
   Globe2,
   LockKeyhole,
@@ -17,9 +16,9 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
-import { getWalletSession, shortenAddress } from "../lib/walletSession";
+import { getWalletSession, onWalletSessionChange, shortenAddress } from "../lib/walletSession";
 import { completeOnboarding } from "../lib/walletSession";
 
 const walletSchema = z.object({
@@ -77,12 +76,17 @@ function FieldIcon({ children }: { children: React.ReactNode }) {
 export function OnboardingForm() {
   const router = useRouter();
   const [step, setStep] = useState(0);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(() => {
+  const session = getWalletSession();
+  return session.connected ? session.address : null;
+});
   const lastStep = step === steps.length - 1;
 
   const walletForm = useForm<WalletForm>({
     resolver: zodResolver(walletSchema),
-    defaultValues: { walletConnected: false as unknown as true },
+    defaultValues: {
+      walletConnected: Boolean(walletAddress) as unknown as true,
+    },
   });
 
   const profileForm = useForm<ProfileForm>({
@@ -95,12 +99,26 @@ export function OnboardingForm() {
     defaultValues: { role: "", workspaceName: "" },
   });
 
+  const selectedRole = useWatch({
+    control: roleForm.control,
+    name: "role",
+  });
+
   useEffect(() => {
-    const session = getWalletSession();
-    if (session.connected && session.address) {
-      setWalletAddress(session.address);
-      walletForm.setValue("walletConnected", true as unknown as true);
-    }
+    const syncSession = () => {
+      const session = getWalletSession();
+
+      if (session.connected && session.address) {
+        setWalletAddress(session.address);
+        walletForm.setValue("walletConnected", true as unknown as true);
+      } else {
+        setWalletAddress(null);
+      }
+    };
+
+    const unsubscribe = onWalletSessionChange(syncSession);
+
+    return unsubscribe;
   }, [walletForm]);
 
   const handleNext = async () => {
@@ -281,7 +299,7 @@ export function OnboardingForm() {
                     <label
                       key={option.value}
                       className={`flex cursor-pointer items-center gap-md rounded-xl border p-md transition ${
-                        roleForm.watch("role") === option.value
+                        selectedRole === option.value
                           ? "border-primary bg-primary-tint"
                           : "border-border bg-white hover:border-primary hover:bg-primary-tint/50"
                       }`}

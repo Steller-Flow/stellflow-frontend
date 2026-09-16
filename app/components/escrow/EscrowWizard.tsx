@@ -73,18 +73,27 @@ export function EscrowWizard({ onComplete, onCancel }: EscrowWizardProps) {
   };
 
   const validateStep = (): boolean => {
+    const result = escrowSchema.safeParse(formData)
+
+    if (result.success){
+      return true
+    }
+
+    const errorFields = new Set(
+      result.error.issues.map((issue) => issue.path[0])
+    )
+
     switch (currentStep) {
       case 1:
-        return formData.freelancerName.length >= 1 && formData.freelancerAddress.length === 56;
+        return(
+          !errorFields.has("freelancerName") && !errorFields.has("freelancerAddress")
+        )
       case 2:
-        return formData.title.length >= 3 && formData.description.length >= 10 && formData.totalAmount > 0;
+        return(
+          !errorFields.has("title") && !errorFields.has("description") && !errorFields.has("totalAmount")
+        )
       case 3:
-        return (
-          formData.milestones.length >= 1 &&
-          formData.milestones.every(
-            (m) => m.title.length >= 1 && m.description.length >= 1 && m.amount > 0
-          )
-        );
+        return !errorFields.has("milestones")
       default:
         return true;
     }

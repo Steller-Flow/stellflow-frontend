@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RefreshCw, Wifi, WifiOff } from "lucide-react";
 import {
   getWalletSession,
@@ -33,7 +33,7 @@ export function WalletInfo({ showBalance = true, compact = false }: WalletInfoPr
     return onWalletSessionChange(syncSession);
   }, []);
 
-  const refreshBalance = async () => {
+  const refreshBalance = useCallback(async () => {
     if (!session.address) return;
 
     setLoading(true);
@@ -49,14 +49,38 @@ export function WalletInfo({ showBalance = true, compact = false }: WalletInfoPr
     } finally {
       setLoading(false);
     }
-  };
+  }, [session.address]);
 
   useEffect(() => {
-    if (session.connected && session.address && showBalance) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      refreshBalance();
+    if (!session.connected || !session.address || !showBalance) {
+      return;
     }
-  }, [session.connected, session.address, showBalance, refreshBalance]);
+
+    const address = session.address;
+    let cancelled = false;
+
+    const loadBalance = async () => {
+      try {
+        const info = await getFreighterBalance(address);
+
+        if (!cancelled) {
+          setWalletInfo(info);
+          updateWalletBalance(info.balanceUSD);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          const freighterError = err as { message?: string };
+          setError(freighterError.message || "Failed to fetch balance");
+        }
+      }
+    };
+
+    void loadBalance();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [session.connected, session.address, showBalance]);
 
   if (!session.connected) {
     return (

@@ -47,8 +47,6 @@ export function DashboardShell({
 }: DashboardShellProps) {
   const {
     sidebar: { collapsed, mobileOpen },
-    toggleSidebar,
-    setSidebarCollapsed,
     setMobileSidebarOpen,
   } = useUIStore();
 
